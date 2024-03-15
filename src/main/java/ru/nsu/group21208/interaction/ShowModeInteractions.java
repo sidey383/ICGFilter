@@ -1,21 +1,20 @@
 package ru.nsu.group21208.interaction;
 
 import ru.nsu.group21208.interaction.toggle.Toggle;
+import ru.nsu.group21208.interaction.toggle.ToggleInteraction;
 
 /**
  * Изменение режима отображение картинки<br/>
  * Два доступных состояния для {@link Toggle} реальный режим и адаптивный режим
  * **/
-public interface ShowModeInteractions<T extends Interaction> extends Toggle<T> {
+public interface ShowModeInteractions extends Toggle<ShowModeInteractions.Mode> {
 
-    /**
-     * @return константа
-     * **/
-    Interaction realModeInteraction();
+    enum Mode {
+        REAL, ADAPTABLE
+    }
 
-    /**
-     * @return константа
-     * **/
-    Interaction adaptableModeInteraction();
+    ToggleInteraction<Mode> realModeInteraction();
+
+    ToggleInteraction<Mode> adaptableModeInteraction();
 
 }

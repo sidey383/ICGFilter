@@ -1,7 +1,10 @@
 package ru.nsu.group21208.visualization;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import ru.nsu.group21208.filter.ImageTransformation;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
@@ -17,9 +20,9 @@ public interface ImageFrame {
     /**
      * Возвращает готовый компонент, содержащий изображение в пунктирных рамках
      * **/
-    Component getShowComponent();
+    JComponent getShowComponent();
 
-    void setOriginalImage(BufferedImage image);
+    void setOriginalImage(@Nullable BufferedImage image);
 
     BufferedImage getOriginalImage();
 
@@ -27,7 +30,7 @@ public interface ImageFrame {
 
     void setAdaptive(boolean isAdaptive);
 
-    void setImageTransformation(ImageTransformation transformation);
+    void setImageTransformation(@NotNull ImageTransformation transformation);
 
     static ImageTransformation identicalImageTransformation() {
         return (bi) -> {
