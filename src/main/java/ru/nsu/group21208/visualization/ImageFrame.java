@@ -12,7 +12,7 @@ import java.awt.image.WritableRaster;
 
 /**
  * Основной компонент отображения.<br/>
- * Создает и модифицирует {@link Component}, отображающий редактируемое изображение.<br/>
+ * Создает и модифицирует {@link JComponent}, отображающий редактируемое изображение.<br/>
  * Также содержит оригинальное и модифицированное изображение.
  * **/
 public interface ImageFrame {
@@ -40,5 +40,4 @@ public interface ImageFrame {
             return new BufferedImage(cm, raster, isAlphaPremultiplied, null);
         };
     }
-
 }
