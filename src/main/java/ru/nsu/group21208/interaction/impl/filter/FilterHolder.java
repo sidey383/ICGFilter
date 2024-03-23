@@ -2,6 +2,7 @@ package ru.nsu.group21208.interaction.impl.filter;
 
 import org.jetbrains.annotations.NotNull;
 import ru.nsu.group21208.filter.Filter;
+import ru.nsu.group21208.filter.FilterEditor;
 import ru.nsu.group21208.filter.FilterParams;
 import ru.nsu.group21208.filter.ImageTransformation;
 import ru.nsu.group21208.interaction.toggle.InteractionToggle;
@@ -49,11 +50,22 @@ public class FilterHolder<T extends FilterParams> implements InteractionToggle<F
 
     @Override
     public void toggle(JComponent component, ToggleActor<FilterHolder<?>> actor) {
+        Consumer<ImageTransformation> consumer;
+
         try {
-            Consumer<ImageTransformation> consumer = parent.startTransformation(this, actor);
-            new FilterDialogHolder<>(component, filter, consumer);
+            consumer = parent.startTransformation(this, actor);
         } catch (ConcurrentModificationException e) {
             SwingUtilities.invokeLater(() -> actor.toggle(parent.active()));
+            return;
         }
+
+        FilterEditor<T> editor = filter.createFilterEditor();
+        JComponent editorComponent = editor.parameterEditor();
+        if (editorComponent == null) {
+            consumer.accept(filter.apply(editor.build()));
+            return;
+        }
+
+        new FilterDialogHolder<>(component, filter, editor, editorComponent, consumer);
     }
 }

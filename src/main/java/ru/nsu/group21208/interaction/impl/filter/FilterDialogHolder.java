@@ -17,13 +17,14 @@ public class FilterDialogHolder<T extends FilterParams> implements WindowListene
 
     private final Consumer<ImageTransformation> transformationConsumer;
 
-    public FilterDialogHolder(JComponent parent, Filter<T> filter, Consumer<ImageTransformation> transformationConsumer) {
+    FilterDialogHolder(JComponent parent, Filter<T> filter , FilterEditor<T> editor, JComponent editorComponent, Consumer<ImageTransformation> transformationConsumer) {
         this.transformationConsumer = transformationConsumer;
-        this.dialog = new JDialog();
-        dialog.getContentPane().setLayout(new BoxLayout(dialog.getContentPane(), BoxLayout.Y_AXIS));
-        dialog.setTitle("Filter settings");
 
-        FilterEditor<T> editor = filter.createFilterEditor();
+
+        if (editorComponent == null) {
+            transformationConsumer.accept(filter.apply(editor.build()));
+            return;
+        }
 
         JButton acceptButton = new JButton("apply");
         acceptButton.addActionListener((e) -> {
@@ -35,8 +36,12 @@ public class FilterDialogHolder<T extends FilterParams> implements WindowListene
             }
         });
 
+        this.dialog = new JDialog();
         dialog.getContentPane().setLayout(new BoxLayout(dialog.getContentPane(), BoxLayout.Y_AXIS));
-        dialog.getContentPane().add(editor.parameterEditor());
+        dialog.setTitle("Filter settings");
+
+        dialog.getContentPane().setLayout(new BoxLayout(dialog.getContentPane(), BoxLayout.Y_AXIS));
+        dialog.getContentPane().add(editorComponent);
         dialog.getContentPane().add(acceptButton);
 
         dialog.pack();

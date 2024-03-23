@@ -59,7 +59,7 @@ public class FilterInteractionImpl extends AbstractToggle<FilterHolder<?>> imple
         super.toggle(source, item);
     }
 
-    @Nullable
+    @NotNull
     public synchronized <T extends FilterParams> Consumer<ImageTransformation> startTransformation(FilterHolder<T> holder, ToggleActor<FilterHolder<?>> actor) throws ConcurrentModificationException {
         if (edited != null)
             throw new ConcurrentModificationException();
