@@ -1,9 +1,9 @@
 package ru.nsu.group21208.filter;
 
-public interface Filter<S extends FilterSettings> {
+public interface Filter<T extends FilterParams> {
 
-    S getParameters();
+    FilterEditor<T> createFilterEditor();
 
-    ImageTransformation apply(S parameters);
+    ImageTransformation apply(T parameters);
 
 }

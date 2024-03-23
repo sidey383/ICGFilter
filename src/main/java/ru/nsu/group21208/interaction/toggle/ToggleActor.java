@@ -5,7 +5,7 @@ import org.jetbrains.annotations.Nullable;
 public interface ToggleActor<T> {
 
     /**
-     * Updating the selected item.
+     * Обновление выбранного объекта. Не отправляется, если данный объект инициировал обновление.
      * **/
     void toggle(@Nullable T item);
 

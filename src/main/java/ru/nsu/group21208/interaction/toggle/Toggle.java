@@ -6,13 +6,13 @@ import org.jetbrains.annotations.Nullable;
 public interface Toggle<T> {
 
     /**
-     * Add toggle actor to listen for item updates.
+     * Зарегестрировать {@link ToggleActor} в этом переключателе.
      * **/
     void addToggleActor(@NotNull ToggleActor<T> actor);
 
     /**
-     * Toggle selected item.<br/>
-     * Sends the update of the selected item {@link ToggleActor#toggle(Object)} to everyone except the source.
+     * Переключить выбранный элемент.<br/>
+     * В случае успеха отправляет обновления во все зарегестрированные {@link ToggleActor#toggle(Object)} за исключением того, кто его вызвал.<br/>
      * **/
     void toggle(@Nullable ToggleActor<T> source, @Nullable T item);
 

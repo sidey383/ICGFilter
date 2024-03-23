@@ -1,12 +1,12 @@
 package ru.nsu.group21208.interaction;
 
-import java.awt.*;
+import javax.swing.*;
 
 /**
  * Иниаицаия взаимодействия пользователя с программой.
  * **/
 public interface Interaction extends InteractionVisualization {
 
-    void apply(Component action);
+    void apply(JComponent action);
 
 }
