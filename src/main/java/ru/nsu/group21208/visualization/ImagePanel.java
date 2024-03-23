@@ -16,10 +16,11 @@ public class ImagePanel extends JPanel implements MouseListener, MouseMotionList
     private final JScrollPane scrollPane;
     private BufferedImage image = null;
     private boolean isAdaptive = false;
+    private boolean isDraggingEnabled = true;
     private final Color BACKGROUND = Color.WHITE;
     private final int EMPTY_PADDING = 4;
     private final int EFFECTIVE_PADDING = EMPTY_PADDING + 1;
-    private final Object interpolationMode = RenderingHints.VALUE_INTERPOLATION_BILINEAR;
+    private Object interpolationMode = RenderingHints.VALUE_INTERPOLATION_BILINEAR;
 
     public ImagePanel(JScrollPane scrollPane) {
         Border border = BorderFactory.createCompoundBorder(
@@ -39,6 +40,10 @@ public class ImagePanel extends JPanel implements MouseListener, MouseMotionList
         setImage(image);
     }
 
+    /**
+     * Sets image to draw in panel
+     * @param image
+     */
     public void setImage(@Nullable BufferedImage image) {
         this.image = image;
         if (image == null) {
@@ -59,11 +64,44 @@ public class ImagePanel extends JPanel implements MouseListener, MouseMotionList
         scrollPane.updateUI();
     }
 
+    /**
+     * Sets adaptive mode <br>
+     * If {@link ImagePanel} is adaptive, then image is fully visible on panel<br>
+     * If it is not, then picture is shown pixel-to-pixel
+     * @param adaptive
+     */
     public void setAdaptive(boolean adaptive) {
         isAdaptive = adaptive;
-        setPreferredSize(new Dimension());
+        if (adaptive) {
+            setPreferredSize(new Dimension());
+        }
+        else if (image != null) {
+            int width = image.getWidth() + 2 * (EFFECTIVE_PADDING);
+            int height = image.getHeight() + 2 * (EFFECTIVE_PADDING);
+            setPreferredSize(new Dimension(width, height));
+        }
         repaint();
         scrollPane.updateUI();
+    }
+
+    /**
+     * Sets dragging mode, if panel is dragging, than user can drag picture with LMB
+     * @param draggingEnabled
+     */
+    public void setDraggingEnabled(boolean draggingEnabled) {
+        isDraggingEnabled = draggingEnabled;
+    }
+
+    /**
+     * Sets interpolation method that will be used for resampling image when adaptive mode is enabled
+     * <br> Values should be one of {@link RenderingHints}'s VALUE_INTERPOLATION_* values:
+     * <br> RenderingHints.VALUE_INTERPOLATION_BILINEAR
+     * <br> RenderingHints.VALUE_INTERPOLATION_BICUBIC
+     * <br> RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR
+     * @param interpolationMode
+     */
+    public void setInterpolationMode(Object interpolationMode) {
+        this.interpolationMode = interpolationMode;
     }
 
     @Override
@@ -106,13 +144,16 @@ public class ImagePanel extends JPanel implements MouseListener, MouseMotionList
 
     @Override
     public void mousePressed(MouseEvent e) {
-        lastX = e.getX();
-        lastY = e.getY();
+        if (isDraggingEnabled) {
+            lastX = e.getX();
+            lastY = e.getY();
+            setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
+        }
     }
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        if (e.getModifiersEx() != InputEvent.BUTTON3_DOWN_MASK) {
+        if (e.getModifiersEx() != InputEvent.BUTTON1_DOWN_MASK || !isDraggingEnabled) {
             return;
         }
 
@@ -133,17 +174,20 @@ public class ImagePanel extends JPanel implements MouseListener, MouseMotionList
 
     @Override
     public void mouseReleased(MouseEvent e) {
-
+        if (isDraggingEnabled) {
+            setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        }
     }
 
     @Override
     public void mouseEntered(MouseEvent e) {
-
+        if (isDraggingEnabled)
+            setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-
+        setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     }
 
     @Override
