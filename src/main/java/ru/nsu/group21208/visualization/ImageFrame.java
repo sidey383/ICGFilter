@@ -12,7 +12,7 @@ import java.awt.image.WritableRaster;
 
 /**
  * Основной компонент отображения.<br/>
- * Создает и модифицирует {@link Component}, отображающий редактируемое изображение.<br/>
+ * Создает и модифицирует {@link JComponent}, отображающий редактируемое изображение.<br/>
  * Также содержит оригинальное и модифицированное изображение.
  * **/
 public interface ImageFrame {
@@ -28,7 +28,29 @@ public interface ImageFrame {
 
     BufferedImage getModifiedImage();
 
+    /**
+     * Sets adaptive mode <br>
+     * If adaptive, then image is fully visible on panel<br>
+     * If it is not, then picture is shown pixel-to-pixel
+     * @param isAdaptive - default value is false
+     */
     void setAdaptive(boolean isAdaptive);
+
+    /**
+     * Sets dragging mode, if panel is dragging, than user can drag picture with LMB
+     * @param draggingEnabled - default value is true
+     */
+    void setDraggingEnabled(boolean draggingEnabled);
+
+    /**
+     * Sets interpolation method that will be used for resampling image when adaptive mode is enabled
+     * <br> Values should be one of {@link RenderingHints}'s VALUE_INTERPOLATION_* values:
+     * <br> RenderingHints.VALUE_INTERPOLATION_BILINEAR
+     * <br> RenderingHints.VALUE_INTERPOLATION_BICUBIC
+     * <br> RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR
+     * @param interpolationMode - default value is VALUE_INTERPOLATION_BILINEAR
+     */
+    void setInterpolationMode(Object interpolationMode);
 
     void setImageTransformation(@NotNull ImageTransformation transformation);
 
@@ -40,5 +62,4 @@ public interface ImageFrame {
             return new BufferedImage(cm, raster, isAlphaPremultiplied, null);
         };
     }
-
 }
