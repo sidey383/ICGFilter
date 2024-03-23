@@ -1,11 +1,18 @@
 package ru.nsu.group21208.interaction;
 
-public interface InterpolationModInteractions {
+import ru.nsu.group21208.interaction.toggle.InteractionToggle;
+import ru.nsu.group21208.interaction.toggle.Toggle;
 
-    Interaction bilinearInteraction();
+public interface InterpolationModInteractions extends Toggle<InterpolationModInteractions.Mode> {
 
-    Interaction bicubicInteraction();
+    enum Mode {
+        BILINEAR, BICUBIC, NEAREST_NEIGHBOR
+    }
 
-    Interaction nearestNeighborInteraction();
+    InteractionToggle<Mode> bilinearInteraction();
+
+    InteractionToggle<Mode> bicubicInteraction();
+
+    InteractionToggle<Mode> nearestNeighborInteraction();
 
 }

@@ -4,7 +4,7 @@ import ru.nsu.group21208.interaction.InteractionVisualization;
 
 import javax.swing.*;
 
-public interface ToggleInteraction<T> extends InteractionVisualization {
+public interface InteractionToggle<T> extends InteractionVisualization {
 
     void toggle(JComponent component, ToggleActor<T> actor);
 

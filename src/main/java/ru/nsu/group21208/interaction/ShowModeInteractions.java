@@ -1,7 +1,7 @@
 package ru.nsu.group21208.interaction;
 
 import ru.nsu.group21208.interaction.toggle.Toggle;
-import ru.nsu.group21208.interaction.toggle.ToggleInteraction;
+import ru.nsu.group21208.interaction.toggle.InteractionToggle;
 
 /**
  * Изменение режима отображение картинки<br/>
@@ -13,8 +13,8 @@ public interface ShowModeInteractions extends Toggle<ShowModeInteractions.Mode> 
         REAL, ADAPTABLE
     }
 
-    ToggleInteraction<Mode> realModeInteraction();
+    InteractionToggle<Mode> realModeInteraction();
 
-    ToggleInteraction<Mode> adaptableModeInteraction();
+    InteractionToggle<Mode> adaptableModeInteraction();
 
 }
