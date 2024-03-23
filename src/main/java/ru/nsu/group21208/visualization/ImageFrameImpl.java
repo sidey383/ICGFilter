@@ -23,10 +23,6 @@ public class ImageFrameImpl implements ImageFrame {
         return scrollPane;
     }
 
-    public ImagePanel getImagePanel() {
-        return panel;
-    }
-
     @Override
     public void setOriginalImage(@Nullable BufferedImage image) {
         originalImage = image;
@@ -47,6 +43,16 @@ public class ImageFrameImpl implements ImageFrame {
     @Override
     public void setAdaptive(boolean isAdaptive) {
         panel.setAdaptive(isAdaptive);
+    }
+
+    @Override
+    public void setDraggingEnabled(boolean draggingEnabled) {
+        panel.setDraggingEnabled(draggingEnabled);
+    }
+
+    @Override
+    public void setInterpolationMode(Object interpolationMode) {
+        panel.setInterpolationMode(interpolationMode);
     }
 
     @Override

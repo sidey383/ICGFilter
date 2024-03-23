@@ -64,12 +64,6 @@ public class ImagePanel extends JPanel implements MouseListener, MouseMotionList
         scrollPane.updateUI();
     }
 
-    /**
-     * Sets adaptive mode <br>
-     * If {@link ImagePanel} is adaptive, then image is fully visible on panel<br>
-     * If it is not, then picture is shown pixel-to-pixel
-     * @param adaptive - default value is false
-     */
     public void setAdaptive(boolean adaptive) {
         isAdaptive = adaptive;
         if (adaptive) {
@@ -84,22 +78,10 @@ public class ImagePanel extends JPanel implements MouseListener, MouseMotionList
         scrollPane.updateUI();
     }
 
-    /**
-     * Sets dragging mode, if panel is dragging, than user can drag picture with LMB
-     * @param draggingEnabled - default value is true
-     */
     public void setDraggingEnabled(boolean draggingEnabled) {
         isDraggingEnabled = draggingEnabled;
     }
 
-    /**
-     * Sets interpolation method that will be used for resampling image when adaptive mode is enabled
-     * <br> Values should be one of {@link RenderingHints}'s VALUE_INTERPOLATION_* values:
-     * <br> RenderingHints.VALUE_INTERPOLATION_BILINEAR
-     * <br> RenderingHints.VALUE_INTERPOLATION_BICUBIC
-     * <br> RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR
-     * @param interpolationMode - default value is VALUE_INTERPOLATION_BILINEAR
-     */
     public void setInterpolationMode(Object interpolationMode) {
         this.interpolationMode = interpolationMode;
     }
