@@ -19,6 +19,7 @@ public class ImagePanel extends JPanel implements MouseListener, MouseMotionList
     private final Color BACKGROUND = Color.WHITE;
     private final int EMPTY_PADDING = 4;
     private final int EFFECTIVE_PADDING = EMPTY_PADDING + 1;
+    private final Object interpolationMode = RenderingHints.VALUE_INTERPOLATION_BILINEAR;
 
     public ImagePanel(JScrollPane scrollPane) {
         Border border = BorderFactory.createCompoundBorder(
@@ -50,16 +51,19 @@ public class ImagePanel extends JPanel implements MouseListener, MouseMotionList
             int width = image.getWidth() + 2 * (EFFECTIVE_PADDING);
             int height = image.getHeight() + 2 * (EFFECTIVE_PADDING);
             setPreferredSize(new Dimension(width, height));
-            repaint();
-            scrollPane.updateUI();
         }
         else {
-
+            setPreferredSize(new Dimension());
         }
+        repaint();
+        scrollPane.updateUI();
     }
 
     public void setAdaptive(boolean adaptive) {
         isAdaptive = adaptive;
+        setPreferredSize(new Dimension());
+        repaint();
+        scrollPane.updateUI();
     }
 
     @Override
@@ -67,19 +71,35 @@ public class ImagePanel extends JPanel implements MouseListener, MouseMotionList
         super.paintComponent(g);
         if (image == null)
             return;
+        int x = EFFECTIVE_PADDING;
+        int y = EFFECTIVE_PADDING;
         if (!isAdaptive) {
-            int x = EFFECTIVE_PADDING;
-            int y = EFFECTIVE_PADDING;
             g.drawImage(image, x, y, this);
         }
         else {
-
+            Dimension viewSize = scrollPane.getViewport().getSize();
+            viewSize.width -= 2*EFFECTIVE_PADDING;
+            viewSize.height -= 2*EFFECTIVE_PADDING;
+            float image_ratio = (float) image.getWidth() / image.getHeight();
+            float panel_ratio = (float) viewSize.width / viewSize.height;
+            int newWidth, newHeight;
+            if (image_ratio > panel_ratio) {
+                newWidth = viewSize.width;
+                newHeight = Math.round(newWidth / image_ratio);
+            }
+            else {
+                newHeight = viewSize.height;
+                newWidth = Math.round(newHeight * image_ratio);
+            }
+            Graphics2D graphics2D = (Graphics2D) g.create();
+            graphics2D.setRenderingHint(
+                    RenderingHints.KEY_INTERPOLATION,
+                    interpolationMode
+            );
+            graphics2D.drawImage(image, x, y, newWidth, newHeight, null);
+            graphics2D.dispose();
         }
     }
-
-    /**
-     * Cool image-dragging feature
-    */
 
     private int lastX = 0;
     private int lastY = 0;
@@ -89,7 +109,6 @@ public class ImagePanel extends JPanel implements MouseListener, MouseMotionList
         lastX = e.getX();
         lastY = e.getY();
     }
-
 
     @Override
     public void mouseDragged(MouseEvent e) {

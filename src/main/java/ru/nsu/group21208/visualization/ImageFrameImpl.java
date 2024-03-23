@@ -5,7 +5,6 @@ import org.jetbrains.annotations.Nullable;
 import ru.nsu.group21208.filter.ImageTransformation;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class ImageFrameImpl implements ImageFrame {
@@ -22,6 +21,10 @@ public class ImageFrameImpl implements ImageFrame {
     @Override
     public JComponent getShowComponent() {
         return scrollPane;
+    }
+
+    public ImagePanel getImagePanel() {
+        return panel;
     }
 
     @Override
