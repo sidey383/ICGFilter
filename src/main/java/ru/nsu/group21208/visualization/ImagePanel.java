@@ -126,7 +126,7 @@ public class ImagePanel extends JPanel implements MouseListener, MouseMotionList
 
     @Override
     public void mousePressed(MouseEvent e) {
-        if (isDraggingEnabled && e.getModifiersEx() == InputEvent.BUTTON1_DOWN_MASK) {
+        if (isDraggingEnabled && (e.getModifiersEx() & InputEvent.BUTTON1_DOWN_MASK) != 0) {
             lastX = e.getX();
             lastY = e.getY();
             setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
@@ -135,7 +135,7 @@ public class ImagePanel extends JPanel implements MouseListener, MouseMotionList
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        if (e.getModifiersEx() != InputEvent.BUTTON1_DOWN_MASK || !isDraggingEnabled) {
+        if ((e.getModifiersEx() & InputEvent.BUTTON1_DOWN_MASK) == 0 || !isDraggingEnabled) {
             return;
         }
 
