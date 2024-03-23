@@ -68,7 +68,7 @@ public class ImagePanel extends JPanel implements MouseListener, MouseMotionList
      * Sets adaptive mode <br>
      * If {@link ImagePanel} is adaptive, then image is fully visible on panel<br>
      * If it is not, then picture is shown pixel-to-pixel
-     * @param adaptive
+     * @param adaptive - default value is false
      */
     public void setAdaptive(boolean adaptive) {
         isAdaptive = adaptive;
@@ -86,7 +86,7 @@ public class ImagePanel extends JPanel implements MouseListener, MouseMotionList
 
     /**
      * Sets dragging mode, if panel is dragging, than user can drag picture with LMB
-     * @param draggingEnabled
+     * @param draggingEnabled - default value is true
      */
     public void setDraggingEnabled(boolean draggingEnabled) {
         isDraggingEnabled = draggingEnabled;
@@ -98,7 +98,7 @@ public class ImagePanel extends JPanel implements MouseListener, MouseMotionList
      * <br> RenderingHints.VALUE_INTERPOLATION_BILINEAR
      * <br> RenderingHints.VALUE_INTERPOLATION_BICUBIC
      * <br> RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR
-     * @param interpolationMode
+     * @param interpolationMode - default value is VALUE_INTERPOLATION_BILINEAR
      */
     public void setInterpolationMode(Object interpolationMode) {
         this.interpolationMode = interpolationMode;
@@ -144,7 +144,7 @@ public class ImagePanel extends JPanel implements MouseListener, MouseMotionList
 
     @Override
     public void mousePressed(MouseEvent e) {
-        if (isDraggingEnabled) {
+        if (isDraggingEnabled && e.getModifiersEx() == InputEvent.BUTTON1_DOWN_MASK) {
             lastX = e.getX();
             lastY = e.getY();
             setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
