@@ -4,6 +4,7 @@ import ru.nsu.group21208.interaction.toggle.InteractionToggle;
 import ru.nsu.group21208.interaction.toggle.ToggleActor;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -17,7 +18,7 @@ public class ToolButton<T> extends JButton implements ActionListener {
         super();
         setName(interaction.name());
         setToolTipText(interaction.description());
-        setIcon((Icon) interaction.actionImage());
+        setIcon(new ImageIcon(ToolBar.getScaledImage(interaction.actionImage(), new Dimension(40, 40), 10)));
         this.interaction = interaction;
         this.actor = actor;
     }
