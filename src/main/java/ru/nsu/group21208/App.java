@@ -1,18 +1,21 @@
 package ru.nsu.group21208;
 
-import ru.nsu.group21208.interaction.FileInteractions;
-import ru.nsu.group21208.interaction.OriginalToggleInteraction;
-import ru.nsu.group21208.interaction.ShowModeInteractions;
-import ru.nsu.group21208.interaction.impl.ButtonInfo;
-import ru.nsu.group21208.interaction.impl.FileInteractionsImpl;
-import ru.nsu.group21208.interaction.impl.OriginalToggleInteractionImpl;
-import ru.nsu.group21208.interaction.impl.ShowModeInteractionsImpl;
+import ru.nsu.group21208.filter.ponomarev.EmbossingFilter;
+import ru.nsu.group21208.filter.ponomarev.RotateFilter;
+import ru.nsu.group21208.interaction.impl.*;
+import ru.nsu.group21208.interaction.impl.filter.FilterGroup;
+import ru.nsu.group21208.interaction.impl.filter.FilterInfo;
+import ru.nsu.group21208.interaction.impl.filter.FilterInteractionImpl;
+import ru.nsu.group21208.panel.PanelInteractionStorage;
+import ru.nsu.group21208.panel.menubar.MenuBar;
+import ru.nsu.group21208.panel.toolbar.ToolBar;
 import ru.nsu.group21208.visualization.ImageFrame;
 import ru.nsu.group21208.visualization.ImageFrameImpl;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.List;
 
 /**
  * Hello world!
@@ -31,23 +34,64 @@ public class App extends JFrame {
 
         ImageFrame imageFrame = new ImageFrameImpl();
 
-        FileInteractions fileInteractions = new FileInteractionsImpl(
+        PanelInteractionStorage storage = new PanelInteractionStorage();
+
+        storage.setFileInteractions(new FileInteractionsImpl(
                 imageFrame,
                 new ButtonInfo(createTextBufferedImage("Open"), "Open", "Open image from file"),
                 new ButtonInfo(createTextBufferedImage("Save"), "Save", "Save image to file")
-        );
-        OriginalToggleInteraction originalToggleInteraction = new OriginalToggleInteractionImpl(
+        ));
+
+        storage.setOriginalToggleInteraction(new OriginalToggleInteractionImpl(
                 imageFrame,
                 new ButtonInfo(createTextBufferedImage("Orig"), "Original", "Show original image"),
                 new ButtonInfo(createTextBufferedImage("Filtered"), "Filtered", "Show filtered image")
-        );
-        ShowModeInteractions showModeInteractions = new ShowModeInteractionsImpl(
+        ));
+
+        storage.setShowModeInteractions(new ShowModeInteractionsImpl(
                 imageFrame,
                 new ButtonInfo(createTextBufferedImage("Real"), "Real", "Show image in real size"),
                 new ButtonInfo(createTextBufferedImage("Adapt"), "Adaptable", "Show image in adaptable size")
-        );
+        ));
 
-        //TODO: create filters and menu
+        storage.setInterpolationModInteractions(new InterpolationModInteractionsImpl(
+                imageFrame,
+                new ButtonInfo(createTextBufferedImage("Bili"), "Bilinear", "Change interpolation mode fro adaptable image size into Bilinear"),
+                new ButtonInfo(createTextBufferedImage("Bicu"), "Bicubic", "Change interpolation mode fro adaptable image size into Bicubic"),
+                new ButtonInfo(createTextBufferedImage("Near"), "Nearest neighbor", "Change interpolation mode fro adaptable image size into Nearest neighbor")
+        ));
+
+        storage.setFilterInteractions(new FilterInteractionImpl(
+                imageFrame,
+                List.of(
+                        new FilterGroup(
+                                List.of(
+                                        new FilterInfo<>(
+                                                new EmbossingFilter(),
+                                                createTextBufferedImage("Embos"),
+                                                "Embossing",
+                                                "Embossing filter"
+                                        )
+                                ),
+                                "kernel"
+                        ),
+                        new FilterGroup(
+                                List.of(
+                                        new FilterInfo<>(
+                                                new RotateFilter(),
+                                                createTextBufferedImage("Rot"),
+                                                "Rotate",
+                                                "Rotate filter"
+                                        )
+                                ),
+                                "rotate"
+                        )
+                )
+        ));
+
+        setJMenuBar(new MenuBar(storage));
+        add(new ToolBar(storage));
+        add(imageFrame.getShowComponent());
 
         pack();
 
@@ -56,7 +100,7 @@ public class App extends JFrame {
     }
 
     private BufferedImage createTextBufferedImage(String text) {
-        BufferedImage image = new BufferedImage(40, 40, 0);
+        BufferedImage image = new BufferedImage(40, 40, BufferedImage.TYPE_3BYTE_BGR);
         Graphics g = image.getGraphics();
         g.setFont(g.getFont().deriveFont(5f));
         g.drawString(text, 0, 40);
