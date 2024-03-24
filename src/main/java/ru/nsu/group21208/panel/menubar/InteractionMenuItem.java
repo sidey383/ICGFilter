@@ -1,4 +1,4 @@
-package ru.nsu.group21208.panel.menuBar;
+package ru.nsu.group21208.panel.menubar;
 
 import ru.nsu.group21208.interaction.Interaction;
 
@@ -11,6 +11,8 @@ public class InteractionMenuItem extends JMenuItem implements ActionListener {
 
     public InteractionMenuItem(Interaction interaction) {
         this.interaction = interaction;
+        setName(interaction.name());
+        setToolTipText(interaction.description());
     }
 
     @Override

@@ -1,8 +1,8 @@
-package ru.nsu.group21208.panel.menuBar;
+package ru.nsu.group21208.panel.toolbar;
 
 import ru.nsu.group21208.interaction.ShowModeInteractions;
 
-public class ShowModeToggleActor extends MenuModeToggleActor<ShowModeInteractions.Mode> {
+public class ShowModeToggleActor extends ToolModeToggleActor<ShowModeInteractions.Mode> {
     public ShowModeToggleActor(ShowModeInteractions showModeToggle) {
         super(showModeToggle);
         addButton(showModeToggle.realModeInteraction(), ShowModeInteractions.Mode.REAL);

@@ -1,4 +1,4 @@
-package ru.nsu.group21208.panel.menuBar;
+package ru.nsu.group21208.panel.menubar;
 
 import org.jetbrains.annotations.Nullable;
 import ru.nsu.group21208.interaction.filter.FilterInteractions;
@@ -17,6 +17,7 @@ public class FilterToggleActor<T extends InteractionToggle<T>> extends JMenu imp
         filterInteractions.addToggleActor(this);
         for (FilterInteractionsGroup<T> group : filterInteractions.filterGroups()) {
             JMenu menuGroup = new JMenu();
+            menuGroup.setName(group.name());
             for (T filter : group.filterInteractions()) {
                 MenuButton<T> button = new MenuButton<>(this, filter);
                 buttonGroup.add(button);

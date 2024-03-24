@@ -1,8 +1,7 @@
 package ru.nsu.group21208.panel;
 
-import ru.nsu.group21208.panel.menuBar.MenuBar;
-import ru.nsu.group21208.panel.toolBar.ToolBar;
-import ru.nsu.group21208.panel.toolBar.ToolButton;
+import ru.nsu.group21208.panel.menubar.MenuBar;
+import ru.nsu.group21208.panel.toolbar.ToolBar;
 
 public class Panel {
 

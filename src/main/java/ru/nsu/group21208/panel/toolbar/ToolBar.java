@@ -1,4 +1,4 @@
-package ru.nsu.group21208.panel.toolBar;
+package ru.nsu.group21208.panel.toolbar;
 import ru.nsu.group21208.panel.PanelInteractionStorage;
 
 import javax.swing.*;
@@ -10,16 +10,18 @@ public class ToolBar extends JToolBar {
         ShowModeToggleActor showModeToggleActor = new ShowModeToggleActor(panelInteractionStorage.getShowModeInteractions());
         OriginalToggleActor originalToggleActor = new OriginalToggleActor(panelInteractionStorage.getOriginalToggleInteraction());
         InterpolationModeToggleActor interpolationModeToggleActor = new InterpolationModeToggleActor(panelInteractionStorage.getInterpolationModInteractions());
+        new FilterToggleActor<>(panelInteractionStorage.getFilterInteractions(), this);
+        FileInteraction fileInteraction = new FileInteraction(panelInteractionStorage.getFileInteractions());
 
         addButtons(showModeToggleActor.getButtons());
         addButtons(originalToggleActor.getButtons());
         addButtons(interpolationModeToggleActor.getButtons());
-
+        addButtons(fileInteraction.getButtons());
 
     }
 
-    private <T> void addButtons(Collection<ToolButton<T>> buttons) {
-        for (ToolButton<T> button : buttons) {
+    private <T extends JButton> void addButtons(Collection<T> buttons) {
+        for (T button : buttons) {
             add(button);
         }
 

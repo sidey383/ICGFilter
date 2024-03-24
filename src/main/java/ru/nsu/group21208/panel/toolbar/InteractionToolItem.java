@@ -1,4 +1,4 @@
-package ru.nsu.group21208.panel.toolBar;
+package ru.nsu.group21208.panel.toolbar;
 
 import ru.nsu.group21208.interaction.Interaction;
 
@@ -11,6 +11,7 @@ public class InteractionToolItem extends JButton implements ActionListener {
 
     public InteractionToolItem(Interaction interaction) {
         this.interaction = interaction;
+        setName(interaction.name());
     }
 
     @Override

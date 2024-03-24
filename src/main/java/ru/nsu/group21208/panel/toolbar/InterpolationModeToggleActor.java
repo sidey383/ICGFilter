@@ -1,8 +1,8 @@
-package ru.nsu.group21208.panel.menuBar;
+package ru.nsu.group21208.panel.toolbar;
 
 import ru.nsu.group21208.interaction.InterpolationModInteractions;
 
-public class InterpolationModeToggleActor extends MenuModeToggleActor<InterpolationModInteractions.Mode> {
+public class InterpolationModeToggleActor extends ToolModeToggleActor<InterpolationModInteractions.Mode> {
     public InterpolationModeToggleActor(InterpolationModInteractions interpolationModInteractions) {
         super(interpolationModInteractions);
         addButton(interpolationModInteractions.bicubicInteraction(), InterpolationModInteractions.Mode.BICUBIC);

@@ -1,4 +1,4 @@
-package ru.nsu.group21208.panel.menuBar;
+package ru.nsu.group21208.panel.menubar;
 
 import org.jetbrains.annotations.Nullable;
 import ru.nsu.group21208.interaction.toggle.InteractionToggle;
