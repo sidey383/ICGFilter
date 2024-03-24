@@ -12,22 +12,25 @@ public class OrderedDitheringTransformation implements ImageTransformation {
     private final int redColors;
     private final int blueColors;
     private final int greenColors;
+    private final double gamma;
 
-    public OrderedDitheringTransformation(int redColors, int greenColors, int blueColors) {
+    public OrderedDitheringTransformation(int redColors, int greenColors, int blueColors, double gamma) {
         this.redColors = redColors;
         this.blueColors = blueColors;
         this.greenColors = greenColors;
+        this.gamma = gamma;
     }
 
     @Override
     public BufferedImage transformation(BufferedImage image) {
         int width = image.getWidth();
         int height = image.getHeight();
+        BufferedImage corr_image = new GammaTransformation(gamma).transformation(image);
         BufferedImage newImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-        ditherColor(image, newImage, ColorUtils::getRed, ColorUtils::setRed, redColors);
+        ditherColor(corr_image, newImage, ColorUtils::getRed, ColorUtils::setRed, redColors);
         ditherColor(newImage, newImage, ColorUtils::getGreen, ColorUtils::setGreen, greenColors);
         ditherColor(newImage, newImage, ColorUtils::getBlue, ColorUtils::setBlue, blueColors);
-        return newImage;
+        return new GammaTransformation(1. / gamma).transformation(newImage);
     }
 
     private void ditherColor(
@@ -52,7 +55,6 @@ public class OrderedDitheringTransformation implements ImageTransformation {
             size = 16;
             mat = MAT_16X16;
         }
-        System.out.println(size);
         for (int y = 0; y < height; ++y) {
             for (int x = 0; x < width; ++x) {
                 int rgb;
@@ -63,8 +65,8 @@ public class OrderedDitheringTransformation implements ImageTransformation {
                     throw new RuntimeException(e);
                 }
                 int c = get.apply(rgb);
-                int err = (256 * mat[x % size][y % size]) / (size * size);
-                err -= 128;
+                int err = (256 * mat[x % size][y % size] - 128*(size * size)) / (size * size);
+//                err -= 128;
                 int res = trunc(applyError(c, err), tones);
                 nw.setRGB(x, y, set.apply(rgb, res));
             }
