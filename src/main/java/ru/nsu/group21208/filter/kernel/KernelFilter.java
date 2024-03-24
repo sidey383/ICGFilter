@@ -18,9 +18,9 @@ public abstract class KernelFilter<T extends FilterParams> implements Filter<T> 
 
     protected abstract int getEdgeColor(BufferedImage image, int x, int y, T parameters);
 
-    protected abstract boolean isWorkOnEdge();
+    protected abstract boolean isWorkOnEdge(T parameters);
 
-    private class KernelTransformation implements ImageTransformation {
+    protected class KernelTransformation implements ImageTransformation {
 
         private final T params;
 
@@ -49,13 +49,22 @@ public abstract class KernelFilter<T extends FilterParams> implements Filter<T> 
             return result;
         }
 
-        private int applyConvolution(BufferedImage image, int x, int y, int[][] kernel, int kernelDivider) {
+        protected int applyConvolution(BufferedImage image, int x, int y, int[][] kernel, int kernelDivider) {
             int width = image.getWidth();
             int height = image.getHeight();
 
             int halfKernelSize = kernel.length / 2;
+            if (!isWorkOnEdge(params) && (
+                    x - halfKernelSize < 0 ||
+                    y - halfKernelSize < 0 ||
+                    x + halfKernelSize < image.getWidth() ||
+                    y + halfKernelSize < image.getHeight())
+            ) {
+                return image.getRGB(x, y);
+            }
             int r = 0, g = 0, b = 0;
 
+            boolean ignore = false;
             // Iterate over the kernel
             for (int i = 0; i < kernel.length; i++) {
                 for (int j = 0; j < kernel.length; j++) {

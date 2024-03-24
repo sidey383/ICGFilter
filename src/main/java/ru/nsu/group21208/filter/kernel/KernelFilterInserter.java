@@ -49,7 +49,7 @@ public class KernelFilterInserter<T extends FilterParams> extends KernelFilter<T
     }
 
     @Override
-    protected boolean isWorkOnEdge() {
+    protected boolean isWorkOnEdge(T parameters) {
         return edge != null;
     }
 
