@@ -28,6 +28,8 @@ public interface ImageFrame {
 
     BufferedImage getModifiedImage();
 
+    void showOriginal(boolean value);
+
     /**
      * Sets adaptive mode <br>
      * If adaptive, then image is fully visible on panel<br>
