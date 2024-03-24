@@ -6,6 +6,8 @@ import java.awt.image.BufferedImage;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
+import static ru.nsu.group21208.filter.dyachenko.ColorUtils.*;
+
 public class OrderedDitheringTransformation implements ImageTransformation {
     private final int redColors;
     private final int blueColors;
@@ -22,9 +24,9 @@ public class OrderedDitheringTransformation implements ImageTransformation {
         int width = image.getWidth();
         int height = image.getHeight();
         BufferedImage newImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-        ditherColor(image, newImage, this::getRed, this::setRed, redColors);
-        ditherColor(newImage, newImage, this::getGreen, this::setGreen, greenColors);
-        ditherColor(newImage, newImage, this::getBlue, this::setBlue, blueColors);
+        ditherColor(image, newImage, ColorUtils::getRed, ColorUtils::setRed, redColors);
+        ditherColor(newImage, newImage, ColorUtils::getGreen, ColorUtils::setGreen, greenColors);
+        ditherColor(newImage, newImage, ColorUtils::getBlue, ColorUtils::setBlue, blueColors);
         return newImage;
     }
 
@@ -65,46 +67,6 @@ public class OrderedDitheringTransformation implements ImageTransformation {
                 int res = trunc(applyError(c, err), tones);
                 nw.setRGB(x, y, set.apply(rgb, res));
             }
-        }
-    }
-
-    private int getRed(int color) {
-        int RED_MASK = 0x00ff0000;
-        return (color & RED_MASK) >> 16;
-    }
-    private int getGreen(int color) {
-        int GREEN_MASK = 0x0000ff00;
-        return (color & GREEN_MASK) >> 8;
-    }
-    private int getBlue(int color) {
-        int BLUE_MASK = 0x000000ff;
-        return (color & BLUE_MASK);
-    }
-    private int setRed(int color, int c) {
-        int RED_MASK = 0x00ff0000;
-        return (color & ~RED_MASK) | ((0xff & c) << 16);
-    }
-    private int setGreen(int color, int c) {
-        int GREEN_MASK = 0x0000ff00;
-        return (color & ~GREEN_MASK) | ((0xff & c) << 8);
-    }
-    private int setBlue(int color, int c) {
-        int BLUE_MASK = 0x000000ff;
-        return (color & ~BLUE_MASK) | (0xff & c);
-    }
-    private int trunc(int value, int grads) {
-        return (value * grads / 256) * 255 / (grads - 1);
-    }
-    private int applyError(int c, int err) {
-        int res = c + err;
-        if (res < 0) {
-            return 0;
-        }
-        else if ((res & ~0xff) != 0) {
-            return 0xff;
-        }
-        else {
-            return res;
         }
     }
 

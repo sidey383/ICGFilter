@@ -5,6 +5,8 @@ import ru.nsu.group21208.filter.ImageTransformation;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
+import static ru.nsu.group21208.filter.dyachenko.ColorUtils.*;
+
 public class FSDitheringTransformation implements ImageTransformation {
     private final int redColors;
     private final int blueColors;
@@ -71,36 +73,5 @@ public class FSDitheringTransformation implements ImageTransformation {
         graphics.dispose();
 
         return finalImage;
-    }
-
-    private int getRed(int color) {
-        int RED_MASK = 0x00ff0000;
-        return (color & RED_MASK) >> 16;
-    }
-    private int getGreen(int color) {
-        int GREEN_MASK = 0x0000ff00;
-        return (color & GREEN_MASK) >> 8;
-    }
-    private int getBlue(int color) {
-        int BLUE_MASK = 0x000000ff;
-        return (color & BLUE_MASK);
-    }
-    private int combineColors(int r, int g, int b) {
-        return 0xff000000 | (r << 16) | (g << 8) | b;
-    }
-    private int trunc(int value, int grads) {
-        return (value * grads / 256) * 255 / (grads - 1);
-    }
-    private int applyError(int c, int err) {
-        int res = c + err;
-        if (res < 0) {
-            return 0;
-        }
-        else if ((res & ~0xff) != 0) {
-            return 0xff;
-        }
-        else {
-            return res;
-        }
     }
 }
