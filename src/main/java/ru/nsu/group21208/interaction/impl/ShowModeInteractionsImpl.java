@@ -7,63 +7,43 @@ import ru.nsu.group21208.interaction.toggle.ToggleActor;
 import ru.nsu.group21208.visualization.ImageFrame;
 
 import javax.swing.*;
-import java.awt.image.BufferedImage;
 
 public class ShowModeInteractionsImpl extends AbstractToggle<ShowModeInteractions.Mode> implements ShowModeInteractions {
-    private final ImageFrame _imageFrame;
+    private final ImageFrame imageFrame;
 
-    public ShowModeInteractionsImpl(@NotNull ImageFrame imageFrame) {
-        _imageFrame = imageFrame;
+    private final InteractionToggle<Mode> realModeInteraction;
+
+    private final InteractionToggle<Mode> adaptableModeInteraction;
+
+    public ShowModeInteractionsImpl(@NotNull ImageFrame imageFrame, ButtonInfo real, ButtonInfo adaptable) {
+        this.imageFrame = imageFrame;
+        this.realModeInteraction = new ModeInteractionToggle(real, Mode.REAL);
+        this.adaptableModeInteraction = new ModeInteractionToggle(adaptable, Mode.ADAPTABLE);
     }
     @Override
     public InteractionToggle<Mode> realModeInteraction() {
-        return new InteractionToggle<Mode>() {
-            @Override
-            public void toggle(JComponent component, ToggleActor<Mode> actor) {
-                ShowModeInteractionsImpl.super.toggle(actor, Mode.REAL);
-                _imageFrame.setAdaptive(false);
-            }
-
-            @Override
-            public @NotNull BufferedImage actionImage() {
-                return new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB); //TODO Add image
-            }
-
-            @Override
-            public @NotNull String name() {
-                return "Real";
-            }
-
-            @Override
-            public @NotNull String description() {
-                return "Pixel-by-pixel showing";
-            }
-        };
+        return realModeInteraction;
     }
 
     @Override
     public InteractionToggle<Mode> adaptableModeInteraction() {
-        return new InteractionToggle<Mode>() {
-            @Override
-            public void toggle(JComponent component, ToggleActor<Mode> actor) {
-                ShowModeInteractionsImpl.super.toggle(actor, Mode.ADAPTABLE);
-                _imageFrame.setAdaptive(true);
-            }
-
-            @Override
-            public @NotNull BufferedImage actionImage() {
-                return new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB); //TODO Add image
-            }
-
-            @Override
-            public @NotNull String name() {
-                return "Adaptable";
-            }
-
-            @Override
-            public @NotNull String description() {
-                return "Adapt picture for screen";
-            }
-        };
+        return adaptableModeInteraction;
     }
+
+    public class ModeInteractionToggle extends InteractionToggleImpl<Mode> {
+
+        private final Mode mode;
+
+        public ModeInteractionToggle(ButtonInfo info, Mode mode) {
+            super(info);
+            this.mode = mode;
+        }
+
+        @Override
+        public void toggle(JComponent component, ToggleActor<Mode> actor) {
+            ShowModeInteractionsImpl.super.toggle(actor, mode);
+            imageFrame.setAdaptive(mode.isAdaptable());
+        }
+    }
+
 }

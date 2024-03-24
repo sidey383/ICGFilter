@@ -10,7 +10,18 @@ import ru.nsu.group21208.interaction.toggle.InteractionToggle;
 public interface ShowModeInteractions extends Toggle<ShowModeInteractions.Mode> {
 
     enum Mode {
-        REAL, ADAPTABLE
+        REAL(false), ADAPTABLE(true);
+
+        private final boolean isAdaptable;
+
+        Mode(boolean isAdaptable) {
+            this.isAdaptable = isAdaptable;
+        }
+
+        public boolean isAdaptable() {
+            return isAdaptable;
+        }
+
     }
 
     InteractionToggle<Mode> realModeInteraction();

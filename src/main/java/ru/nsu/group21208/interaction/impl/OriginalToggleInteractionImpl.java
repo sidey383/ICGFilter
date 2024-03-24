@@ -10,18 +10,18 @@ import javax.swing.*;
 import java.awt.image.BufferedImage;
 
 public class OriginalToggleInteractionImpl extends AbstractToggle<OriginalToggleInteraction.Mode> implements OriginalToggleInteraction {
-    private ImageFrame _imageFrame;
+    private final ImageFrame imageFrame;
 
     public OriginalToggleInteractionImpl(@NotNull ImageFrame imageFrame) {
-        _imageFrame = imageFrame;
+        this.imageFrame = imageFrame;
     }
     @Override
     public InteractionToggle<Mode> originalInteraction() {
-        return new InteractionToggle<Mode>() {
+        return new InteractionToggle<>() {
             @Override
             public void toggle(JComponent component, ToggleActor<Mode> actor) {
                 OriginalToggleInteractionImpl.super.toggle(actor, Mode.ORIGINAL);
-                _imageFrame.setImageTransformation(ImageFrame.identicalImageTransformation());
+                imageFrame.setImageTransformation(ImageFrame.identicalImageTransformation());
             }
 
             @Override
@@ -43,11 +43,11 @@ public class OriginalToggleInteractionImpl extends AbstractToggle<OriginalToggle
 
     @Override
     public InteractionToggle<Mode> filterInteraction() {
-        return new InteractionToggle<Mode>() {
+        return new InteractionToggle<>() {
             @Override
             public void toggle(JComponent component, ToggleActor<Mode> actor) {
                 OriginalToggleInteractionImpl.super.toggle(actor, Mode.FILTER);
-                _imageFrame.setImageTransformation(ImageFrame.identicalImageTransformation());
+                imageFrame.setImageTransformation(ImageFrame.identicalImageTransformation());
             }
 
             @Override
