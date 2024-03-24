@@ -11,14 +11,15 @@ public class OrderedDitheringFilter implements Filter<BaseFilterParams> {
     private final String redColorsName = "Red colors";
     private final String greenColorsName = "Green colors";
     private final String blueColorsName = "Blue colors";
+    private final BaseFilterEditor editor = new BaseFilterEditor(
+            new IntegerParam(redColorsName, 2, 2, 128),
+            new IntegerParam(greenColorsName, 2, 2, 128),
+            new IntegerParam(blueColorsName, 2, 2, 128)
+    );
 
     @Override
     public FilterEditor<BaseFilterParams> createFilterEditor() {
-        return new BaseFilterEditor(
-                new IntegerParam(redColorsName, 2, 2, 128),
-                new IntegerParam(greenColorsName, 2, 2, 128),
-                new IntegerParam(blueColorsName, 2, 2, 128)
-        );
+        return editor;
     }
 
     @Override

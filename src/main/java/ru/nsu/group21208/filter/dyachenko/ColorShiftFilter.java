@@ -10,12 +10,14 @@ import ru.nsu.group21208.filter.base.param.IntegerParam;
 import java.awt.image.BufferedImage;
 
 public class ColorShiftFilter implements Filter<BaseFilterParams> {
+    private final BaseFilterEditor editor = new BaseFilterEditor(
+            new IntegerParam("Horizontal shift", 5, 0, 100),
+            new IntegerParam("Vertical shift", 5, 0, 100)
+    );
+
     @Override
     public FilterEditor<BaseFilterParams> createFilterEditor() {
-        return new BaseFilterEditor(
-                new IntegerParam("Horizontal shift", 5, 0, 100),
-                new IntegerParam("Vertical shift", 5, 0, 100)
-        );
+        return editor;
     }
 
     @Override
