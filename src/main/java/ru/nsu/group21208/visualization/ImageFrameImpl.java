@@ -65,8 +65,10 @@ public class ImageFrameImpl implements ImageFrame {
     @Override
     public void setImageTransformation(@NotNull ImageTransformation transformation) {
         this.transformation = transformation;
-        modifiedImage = transformation.transformation(originalImage);
-        setPanelImage();
+        if (originalImage != null) {
+            modifiedImage = transformation.transformation(originalImage);
+            setPanelImage();
+        }
     }
 
     private void setPanelImage() {
