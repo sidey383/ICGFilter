@@ -28,7 +28,7 @@ public class DoubleParamEditor extends JPanel {
         JLabel label = new JLabel(param.name());
         add(label);
         NumberFormat amountFormat = NumberFormat.getNumberInstance();
-        amountFormat.setParseIntegerOnly(true);
+        amountFormat.setParseIntegerOnly(false);
         textField = new JFormattedTextField(amountFormat);
         textField.addFocusListener(new FocusListener() {
             @Override
@@ -44,7 +44,11 @@ public class DoubleParamEditor extends JPanel {
         add(textField);
         textField.setText(Double.toString(param.getValue()));
         textField.addActionListener(this::updateField);
-        slider = new JSlider((int) param.min(), (int) param.max(), param.getValue().intValue());
+        slider = new JSlider(
+                0, param.getDivisions(),
+                fitSlider(param.getValue())
+        );
+//        slider = new JSlider((int) param.min(), (int) param.max(), param.getValue().intValue());
         add(slider);
         slider.addChangeListener(this::updateSlider);
     }
@@ -59,23 +63,25 @@ public class DoubleParamEditor extends JPanel {
             if (val < param.min()) {
                 textField.setText(Double.toString(param.min()));
                 wrongDataDialog();
+                val = param.min();
             }
             if (val > param.max()) {
                 textField.setText(Double.toString(param.max()));
                 wrongDataDialog();
+                param.max();
             }
-            slider.setValue((int) defaultValue);
+            slider.setValue(fitSlider(val));
         } catch (NumberFormatException ex) {
             textField.setText(Double.toString(defaultValue));
             wrongDataDialog();
-            slider.setValue(1);
+            slider.setValue(fitSlider(defaultValue));
         }
     }
 
     private void updateSlider(ChangeEvent e) {
         int val = slider.getValue();
-        textField.setText(Integer.toString(val));
-        setValue(val);
+        textField.setText(String.format("%.2f", getFromSlider(val)));
+        setValue(getFromSlider(val));
     }
 
     public void wrongDataDialog() {
@@ -92,6 +98,14 @@ public class DoubleParamEditor extends JPanel {
 
     protected void setValue(double val) {
         param.setValue(val);
+    }
+
+    private int fitSlider(double val) {
+        return param.getDivisions() * (int) ((val - param.min()) / (param.max() - param.min()));
+    }
+
+    private double getFromSlider(int val) {
+        return ((double) val / param.getDivisions()) * (param.max() - param.min()) + param.min();
     }
 
 }
