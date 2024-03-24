@@ -17,6 +17,7 @@ public class ToolButton<T> extends JButton implements ActionListener {
         super();
         setName(interaction.name());
         setToolTipText(interaction.description());
+        setIcon((Icon) interaction.actionImage());
         this.interaction = interaction;
         this.actor = actor;
     }

@@ -4,6 +4,7 @@ import ru.nsu.group21208.interaction.FileInteractions;
 import ru.nsu.group21208.interaction.InterpolationModInteractions;
 import ru.nsu.group21208.interaction.OriginalToggleInteraction;
 import ru.nsu.group21208.interaction.ShowModeInteractions;
+import ru.nsu.group21208.interaction.filter.FilterInteractions;
 
 public class PanelInteractionStorage {
     private ShowModeInteractions showModeInteractions;
@@ -13,6 +14,8 @@ public class PanelInteractionStorage {
     private InterpolationModInteractions interpolationModInteractions;
 
     private FileInteractions fileInteractions;
+
+    private FilterInteractions<?> filterInteractions;
 
     public void setFileInteractions(FileInteractions fileInteractions) {
         this.fileInteractions = fileInteractions;
@@ -44,5 +47,13 @@ public class PanelInteractionStorage {
 
     public ShowModeInteractions getShowModeInteractions() {
         return showModeInteractions;
+    }
+
+    public FilterInteractions<?> getFilterInteractions() {
+        return filterInteractions;
+    }
+
+    public void setFilterInteractions(FilterInteractions<?> filterInteractions) {
+        this.filterInteractions = filterInteractions;
     }
 }
