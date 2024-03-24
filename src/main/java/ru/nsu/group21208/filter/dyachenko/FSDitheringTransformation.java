@@ -4,6 +4,8 @@ import ru.nsu.group21208.filter.ImageTransformation;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 import static ru.nsu.group21208.filter.dyachenko.ColorUtils.*;
 
@@ -22,56 +24,34 @@ public class FSDitheringTransformation implements ImageTransformation {
     public BufferedImage transformation(BufferedImage image) {
         int width = image.getWidth();
         int height = image.getHeight();
-        BufferedImage newImage = new BufferedImage(width + 2, height + 1, BufferedImage.TYPE_INT_ARGB);
-        Graphics graphics = newImage.createGraphics();
-        graphics.setColor(Color.BLACK);
-        graphics.fillRect(0, 0, width + 2, height + 1);
-        graphics.drawImage(image, 1, 0, null);
-        graphics.dispose();
+        BufferedImage newImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        ditherColor(image, newImage, ColorUtils::getRed, ColorUtils::setRed, redColors);
+        ditherColor(newImage, newImage, ColorUtils::getGreen, ColorUtils::setGreen, greenColors);
+        ditherColor(newImage, newImage, ColorUtils::getBlue, ColorUtils::setBlue, blueColors);
+        return newImage;
+    }
+
+    private static void ditherColor(
+            BufferedImage og, BufferedImage nw,
+            Function<Integer, Integer> get,
+            BiFunction<Integer, Integer, Integer> set,
+            int tones
+    ) {
+        int width = og.getWidth();
+        int height = og.getHeight();
+        int[][] errors = new int[height + 1][width + 2];
         for (int h = 0; h < height; ++h) {
-            int og = newImage.getRGB(1, h);
-            int r = getRed(og);
-            int g = getGreen(og);
-            int b = getBlue(og);
-            for (int w = 1; w < width + 1; ++w) {
-                int nr = trunc(r, redColors);
-                int ng = trunc(g, greenColors);
-                int nb = trunc(b, blueColors);
-                newImage.setRGB(w, h, combineColors(nr, ng, nb));
-                int er = r - nr;
-                int eg = g - ng;
-                int eb = b - nb;
-                int bottom = newImage.getRGB(w, h + 1);
-                int bottom_right = newImage.getRGB(w + 1, h + 1);
-                int bottom_left = newImage.getRGB(w - 1, h + 1);
-                newImage.setRGB(w - 1, h + 1, combineColors(
-                        applyError(getRed(bottom_left),3*(er>>4)),
-                        applyError(getGreen(bottom_left),3*(eg>>4)),
-                        applyError(getBlue(bottom_left),3*(eb>>4)))
-                ); // 3/16
-                newImage.setRGB(w, h + 1, combineColors(
-                        applyError(getRed(bottom),5*(er>>4)),
-                        applyError(getGreen(bottom),5*(eg>>4)),
-                        applyError(getBlue(bottom),5*(eb>>4)))
-                ); // 5/16
-                newImage.setRGB(w + 1, h + 1, combineColors(
-                        applyError(getRed(bottom_right), er>>4),
-                        applyError(getGreen(bottom_right), eg>>4),
-                        applyError(getBlue(bottom_right), eb>>4))
-                ); // 1/16
-                og = newImage.getRGB(w + 1, h);
-                r = applyError(getRed(og), 7*(er>>4));
-                g = applyError(getGreen(og), 7*(eg>>4));
-                b = applyError(getBlue(og), 7*(eb>>4));
-                // 7/16
+            for (int w = 0; w < width; ++w) {
+                int rgb = og.getRGB(w, h);
+                int c = applyError(get.apply(rgb), errors[h][w + 1]);
+                int newC = trunc(c, tones);
+                int err = c - newC;
+                nw.setRGB(w, h, set.apply(rgb, newC));
+                errors[h+1][w] += 3 * (err >> 4);
+                errors[h+1][w+1] += 5 * (err >> 4);
+                errors[h+1][w+2] += (err >> 4);
+                errors[h][w+2] += 7 * (err >> 4);
             }
         }
-
-        BufferedImage finalImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-        graphics = finalImage.createGraphics();
-        graphics.drawImage(newImage, -1, 0, null);
-        graphics.dispose();
-
-        return finalImage;
     }
 }

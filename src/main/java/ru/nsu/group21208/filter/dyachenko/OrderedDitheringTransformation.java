@@ -64,6 +64,7 @@ public class OrderedDitheringTransformation implements ImageTransformation {
                 }
                 int c = get.apply(rgb);
                 int err = (256 * mat[x % size][y % size]) / (size * size);
+                err -= 128;
                 int res = trunc(applyError(c, err), tones);
                 nw.setRGB(x, y, set.apply(rgb, res));
             }
