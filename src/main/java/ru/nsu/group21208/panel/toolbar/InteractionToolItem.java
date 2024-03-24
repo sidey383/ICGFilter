@@ -14,7 +14,12 @@ public class InteractionToolItem extends JButton implements ActionListener {
     public InteractionToolItem(Interaction interaction) {
         this.interaction = interaction;
         setName(interaction.name());
-        setIcon(new ImageIcon(ToolBar.getScaledImage(interaction.actionImage(), new Dimension(40, 40), 10)));
+        Dimension size = new Dimension(40, 40);
+        setSize(size);
+        setPreferredSize(size);
+        setMinimumSize(size);
+        setMaximumSize(size);
+        setIcon(new ImageIcon(ToolBar.getScaledImage(interaction.actionImage(), size, 10)));
     }
 
     @Override

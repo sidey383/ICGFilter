@@ -18,7 +18,12 @@ public class ToolButton<T> extends JButton implements ActionListener {
         super();
         setName(interaction.name());
         setToolTipText(interaction.description());
-        setIcon(new ImageIcon(ToolBar.getScaledImage(interaction.actionImage(), new Dimension(40, 40), 10)));
+        Dimension size = new Dimension(40, 40);
+        setSize(size);
+        setPreferredSize(size);
+        setMinimumSize(size);
+        setMaximumSize(size);
+        setIcon(new ImageIcon(ToolBar.getScaledImage(interaction.actionImage(), size, 10)));
         this.interaction = interaction;
         this.actor = actor;
     }
