@@ -10,20 +10,20 @@ import javax.swing.*;
 import java.util.HashMap;
 
 public class FilterToggleActor<T extends InteractionToggle<T>> implements ToggleActor<T> {
-    private final HashMap<T, ToolButton<T>> modeToButton = new HashMap<>();
+    private final HashMap<T, ToggleButton<T>> modeToButton = new HashMap<>();
     private final ButtonGroup buttonGroup = new ButtonGroup();
 
-    public FilterToggleActor(FilterInteractions<T> filterInteractions, ToolBar toolBar) {
-        filterInteractions.addToggleActor(this);
+    public FilterToggleActor(FilterInteractions<T> filterInteractions, JToolBar toolBar) {
         for (FilterInteractionsGroup<T> group : filterInteractions.filterGroups()) {
             for (T filter : group.filterInteractions()) {
-                ToolButton<T> button = new ToolButton<>(this, filter);
+                ToggleButton<T> button = new ToggleButton<>(this, filter);
                 buttonGroup.add(button);
                 modeToButton.put(filter, button);
                 toolBar.add(button);
             }
             toolBar.add(new JToolBar.Separator());
         }
+        filterInteractions.addToggleActor(this);
     }
 
     @Override

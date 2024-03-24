@@ -20,7 +20,7 @@ public class ShowModeInteractionsImpl extends AbstractToggle<ShowModeInteraction
         this.imageFrame = imageFrame;
         this.realModeInteraction = new ModeInteractionToggle(real, Mode.REAL);
         this.adaptableModeInteraction = new ModeInteractionToggle(adaptable, Mode.ADAPTABLE);
-        setAvailableItems(List.of(Mode.values()));
+        setAvailableItems(List.of(Mode.values()), Mode.REAL);
     }
     @Override
     public InteractionToggle<Mode> realModeInteraction() {

@@ -20,6 +20,12 @@ public class DoubleParamEditor extends JPanel {
 
     private final double defaultValue;
 
+    private JDialog dialog;
+
+    private boolean sliderInUpdate = false;
+
+    private boolean textInUpdate = false;
+
     public DoubleParamEditor(DoubleParam param) {
         super();
         this.defaultValue = param.getValue();
@@ -50,7 +56,7 @@ public class DoubleParamEditor extends JPanel {
         );
 //        slider = new JSlider((int) param.min(), (int) param.max(), param.getValue().intValue());
         add(slider);
-        slider.addChangeListener(this::updateSlider);
+        slider.addChangeListener(this::sliderUpdate);
     }
 
     private void updateField(ActionEvent e) {
@@ -58,8 +64,10 @@ public class DoubleParamEditor extends JPanel {
     }
 
     private void textFieldUpdate() {
+        textInUpdate = true;
+        String text = textField.getText();
         try {
-            double val = Double.parseDouble(textField.getText());
+            double val = Double.parseDouble(text);
             if (val < param.min()) {
                 textField.setText(Double.toString(param.min()));
                 wrongDataDialog();
@@ -70,22 +78,35 @@ public class DoubleParamEditor extends JPanel {
                 wrongDataDialog();
                 param.max();
             }
-            slider.setValue(fitSlider(val));
+            if (!sliderInUpdate) {
+                slider.setValue(fitSlider(val));
+                setValue(val);
+            }
         } catch (NumberFormatException ex) {
             textField.setText(Double.toString(defaultValue));
             wrongDataDialog();
             slider.setValue(fitSlider(defaultValue));
+        } finally {
+            textInUpdate = false;
         }
     }
 
-    private void updateSlider(ChangeEvent e) {
+    private void sliderUpdate(ChangeEvent e) {
+        sliderInUpdate = true;
         int val = slider.getValue();
-        textField.setText(String.format("%.2f", getFromSlider(val)));
-        setValue(getFromSlider(val));
+        if (!textInUpdate) {
+            double value = getFromSlider(val);
+            textField.setText(String.format("%.2f", value).replace(",", "."));
+            textFieldUpdate();
+            setValue(value);
+        }
+        sliderInUpdate = false;
     }
 
     public void wrongDataDialog() {
-        JDialog dialog = new JDialog();
+        if (dialog != null && dialog.isShowing())
+            return;
+        dialog = new JDialog();
         dialog.setTitle("Wrong data");
         dialog.setPreferredSize(new Dimension(400, 100));
         dialog.setMinimumSize(new Dimension(400, 100));
@@ -101,7 +122,7 @@ public class DoubleParamEditor extends JPanel {
     }
 
     private int fitSlider(double val) {
-        return param.getDivisions() * (int) ((val - param.min()) / (param.max() - param.min()));
+        return (int) (param.getDivisions() * (val - param.min()) / (param.max() - param.min()));
     }
 
     private double getFromSlider(int val) {

@@ -1,5 +1,9 @@
 package ru.nsu.group21208;
 
+import ru.nsu.group21208.filter.dyachenko.FSDitheringFilter;
+import ru.nsu.group21208.filter.dyachenko.GammaFilter;
+import ru.nsu.group21208.filter.dyachenko.OrderedDitheringFilter;
+import ru.nsu.group21208.filter.dyachenko.RotationFilter;
 import ru.nsu.group21208.filter.ponomarev.EmbossingFilter;
 import ru.nsu.group21208.filter.ponomarev.RotateFilter;
 import ru.nsu.group21208.interaction.impl.*;
@@ -85,6 +89,35 @@ public class App extends JFrame {
                                         )
                                 ),
                                 "rotate"
+                        ),
+                        new FilterGroup(
+                                List.of(
+                                        new FilterInfo<>(
+                                                new FSDitheringFilter(),
+                                                createTextBufferedImage("FDith"),
+                                                "FSDDithering",
+                                                "FSD Dithering filter"
+                                        ),
+                                        new FilterInfo<>(
+                                                new GammaFilter(),
+                                                createTextBufferedImage("G"),
+                                                "Gamma",
+                                                "Gamma filter"
+                                        ),
+                                        new FilterInfo<>(
+                                                new OrderedDitheringFilter(),
+                                                createTextBufferedImage("ODith"),
+                                                "Ordered dithering",
+                                                "Ordered dithering filter"
+                                        ),
+                                        new FilterInfo<>(
+                                                new RotationFilter(),
+                                                createTextBufferedImage("Rot"),
+                                                "Rotation",
+                                                "Rotation filter"
+                                        )
+                                ),
+                                "dyachenko"
                         )
                 )
         ));
@@ -100,10 +133,13 @@ public class App extends JFrame {
     }
 
     private BufferedImage createTextBufferedImage(String text) {
-        BufferedImage image = new BufferedImage(40, 40, BufferedImage.TYPE_3BYTE_BGR);
+        BufferedImage image = new BufferedImage(30, 30, BufferedImage.TYPE_3BYTE_BGR);
         Graphics g = image.getGraphics();
-        g.setFont(g.getFont().deriveFont(5f));
-        g.drawString(text, 0, 40);
+        g.setColor(Color.WHITE);
+        g.fillRect(0, 0, 30, 30);
+        g.setColor(Color.BLACK);
+        g.setFont(g.getFont().deriveFont(15f));
+        g.drawString(text, 0, 25);
         g.dispose();
         return image;
     }

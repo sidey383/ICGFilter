@@ -14,7 +14,6 @@ public class MenuModeToggleActor<T> extends JMenu implements ToggleActor<T> {
 
     public MenuModeToggleActor(Toggle<T> toggle, String name) {
         super(name);
-        toggle.addToggleActor(this);
     }
 
     protected void addButton(InteractionToggle<T> interactionToggle, T mode) {

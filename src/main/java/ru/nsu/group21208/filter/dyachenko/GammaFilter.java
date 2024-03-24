@@ -20,7 +20,6 @@ public class GammaFilter implements Filter<BaseFilterParams> {
     @Override
     public ImageTransformation apply(BaseFilterParams parameters) {
         double gamma = parameters.getValue("gamma", Double.class);
-        System.out.println(gamma);
         return new GammaTransformation(gamma);
     }
 }

@@ -23,7 +23,7 @@ public class InterpolationModInteractionsImpl extends AbstractToggle<Interpolati
         this.bilinearInteraction = new ModeInteractionToggle(bilinear, Mode.BILINEAR);
         this.bicubicInteraction = new ModeInteractionToggle(bicubic, Mode.BICUBIC);
         this.nearestNeighborInteraction = new ModeInteractionToggle(nearest, Mode.NEAREST_NEIGHBOR);
-        setAvailableItems(List.of(Mode.values()));
+        setAvailableItems(List.of(Mode.values()), Mode.BILINEAR);
     }
     @Override
     public InteractionToggle<Mode> bilinearInteraction() {

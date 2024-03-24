@@ -8,5 +8,6 @@ public class InterpolationModeToggleActor extends MenuModeToggleActor<Interpolat
         addButton(interpolationModInteractions.bicubicInteraction(), InterpolationModInteractions.Mode.BICUBIC);
         addButton(interpolationModInteractions.bilinearInteraction(), InterpolationModInteractions.Mode.BILINEAR);
         addButton(interpolationModInteractions.nearestNeighborInteraction(), InterpolationModInteractions.Mode.NEAREST_NEIGHBOR);
+        interpolationModInteractions.addToggleActor(this);
     }
 }

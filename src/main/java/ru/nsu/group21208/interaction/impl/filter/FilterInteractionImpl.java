@@ -34,7 +34,7 @@ public class FilterInteractionImpl extends AbstractToggle<FilterHolder<?>> imple
             interactionGroups.add(interactionsGroup);
             filterHolders.addAll(interactionsGroup.filterInteractions());
         }
-        setAvailableItems(filterHolders);
+        setAvailableItems(filterHolders, null);
         this.filterHolders = filterHolders;
         this.interactionGroups = interactionGroups;
     }

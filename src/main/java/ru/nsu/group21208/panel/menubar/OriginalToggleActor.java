@@ -7,5 +7,6 @@ public class OriginalToggleActor extends MenuModeToggleActor<OriginalToggleInter
         super(originalToggleInteraction, "Toggle");
         addButton(originalToggleInteraction.originalInteraction(), OriginalToggleInteraction.Mode.ORIGINAL);
         addButton(originalToggleInteraction.filterInteraction(), OriginalToggleInteraction.Mode.FILTER);
+        originalToggleInteraction.addToggleActor(this);
     }
 }

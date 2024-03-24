@@ -7,5 +7,6 @@ public class ShowModeToggleActor extends MenuModeToggleActor<ShowModeInteraction
         super(showModeToggle, "Scale");
         addButton(showModeToggle.realModeInteraction(), ShowModeInteractions.Mode.REAL);
         addButton(showModeToggle.adaptableModeInteraction(), ShowModeInteractions.Mode.ADAPTABLE);
+        showModeToggle.addToggleActor(this);
     }
 }

@@ -31,7 +31,7 @@ public class OriginalToggleInteractionImpl extends AbstractToggle<OriginalToggle
                 imageFrame.showOriginal(false);
             }
         };
-        setAvailableItems(List.of(Mode.values()));
+        setAvailableItems(List.of(Mode.values()), Mode.FILTER);
 
     }
     @Override

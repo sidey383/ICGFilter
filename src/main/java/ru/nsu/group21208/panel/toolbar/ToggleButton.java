@@ -8,24 +8,24 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class ToolButton<T> extends JButton implements ActionListener {
+public class ToggleButton<T> extends JToggleButton implements ActionListener {
 
     private final InteractionToggle<T> interaction;
 
     private final ToggleActor<T> actor;
 
-    public ToolButton(ToggleActor<T> actor, InteractionToggle<T> interaction) {
+    public ToggleButton(ToggleActor<T> actor, InteractionToggle<T> interaction) {
         super();
-        setName(interaction.name());
         setToolTipText(interaction.description());
         Dimension size = new Dimension(40, 40);
         setSize(size);
         setPreferredSize(size);
         setMinimumSize(size);
         setMaximumSize(size);
-        setIcon(new ImageIcon(ToolBar.getScaledImage(interaction.actionImage(), size, 10)));
+        setIcon(new ImageIcon(ToolBar.getScaledImage(interaction.actionImage(), new Dimension(40, 40), 10)));
         this.interaction = interaction;
         this.actor = actor;
+        addActionListener(this);
     }
 
     @Override

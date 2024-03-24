@@ -10,15 +10,13 @@ import java.util.Collection;
 import java.util.HashMap;
 
 public class ToolModeToggleActor<T> implements ToggleActor<T> {
-    private final HashMap<T, ToolButton<T>> modeToButton = new HashMap<>();
+    private final HashMap<T, ToggleButton<T>> modeToButton = new HashMap<>();
     private final ButtonGroup buttonGroup = new ButtonGroup();
 
-    public ToolModeToggleActor(Toggle<T> toggle) {
-        toggle.addToggleActor(this);
-    }
+    public ToolModeToggleActor(Toggle<T> toggle) {}
 
     protected void addButton(InteractionToggle<T> interactionToggle, T mode) {
-        ToolButton<T> button = new ToolButton<>(this, interactionToggle);
+        ToggleButton<T> button = new ToggleButton<>(this, interactionToggle);
         buttonGroup.add(button);
         modeToButton.put(mode, button);
     }
@@ -32,7 +30,7 @@ public class ToolModeToggleActor<T> implements ToggleActor<T> {
         buttonGroup.setSelected(modeToButton.get(item).getModel(), true);
     }
 
-    public Collection<ToolButton<T>> getButtons() {
+    public Collection<ToggleButton<T>> getButtons() {
         return modeToButton.values();
     }
 }
