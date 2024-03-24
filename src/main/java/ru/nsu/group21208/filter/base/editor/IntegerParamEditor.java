@@ -56,16 +56,18 @@ public class IntegerParamEditor extends JPanel {
             if (val < param.min()) {
                 textField.setText(Integer.toString(param.min()));
                 wrongDataDialog();
+                val = param.min();
             }
             if (val > param.max()) {
                 textField.setText(Integer.toString(param.max()));
                 wrongDataDialog();
+                val = param.max();
             }
             slider.setValue(val);
         } catch (NumberFormatException ex) {
-            textField.setText("1");
+            textField.setText(Integer.toString(param.min()));
             wrongDataDialog();
-            slider.setValue(1);
+            slider.setValue(param.min());
         }
     }
 
