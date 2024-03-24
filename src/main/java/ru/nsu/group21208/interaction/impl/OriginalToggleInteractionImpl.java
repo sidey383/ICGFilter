@@ -7,63 +7,40 @@ import ru.nsu.group21208.interaction.toggle.ToggleActor;
 import ru.nsu.group21208.visualization.ImageFrame;
 
 import javax.swing.*;
-import java.awt.image.BufferedImage;
+import java.util.List;
 
 public class OriginalToggleInteractionImpl extends AbstractToggle<OriginalToggleInteraction.Mode> implements OriginalToggleInteraction {
-    private final ImageFrame imageFrame;
 
-    public OriginalToggleInteractionImpl(@NotNull ImageFrame imageFrame) {
-        this.imageFrame = imageFrame;
-    }
-    @Override
-    public InteractionToggle<Mode> originalInteraction() {
-        return new InteractionToggle<>() {
+    private final InteractionToggle<Mode> originalInteraction;
+
+    private final InteractionToggle<Mode> filterInteraction;
+
+    public OriginalToggleInteractionImpl(@NotNull ImageFrame imageFrame, ButtonInfo original, ButtonInfo filter) {
+        this.originalInteraction = new InteractionToggleImpl<>(original) {
             @Override
             public void toggle(JComponent component, ToggleActor<Mode> actor) {
                 OriginalToggleInteractionImpl.super.toggle(actor, Mode.ORIGINAL);
-                imageFrame.setImageTransformation(ImageFrame.identicalImageTransformation());
-            }
-
-            @Override
-            public @NotNull BufferedImage actionImage() {
-                return new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB); //TODO Add image
-            }
-
-            @Override
-            public @NotNull String name() {
-                return "Original Image";
-            }
-
-            @Override
-            public @NotNull String description() {
-                return "Show original image";
+                imageFrame.showOriginal(true);
             }
         };
+
+        this.filterInteraction = new InteractionToggleImpl<>(filter) {
+            @Override
+            public void toggle(JComponent component, ToggleActor<Mode> actor) {
+                OriginalToggleInteractionImpl.super.toggle(actor, Mode.FILTER);
+                imageFrame.showOriginal(false);
+            }
+        };
+        setAvailableItems(List.of(Mode.values()));
+
+    }
+    @Override
+    public InteractionToggle<Mode> originalInteraction() {
+        return originalInteraction;
     }
 
     @Override
     public InteractionToggle<Mode> filterInteraction() {
-        return new InteractionToggle<>() {
-            @Override
-            public void toggle(JComponent component, ToggleActor<Mode> actor) {
-                OriginalToggleInteractionImpl.super.toggle(actor, Mode.FILTER);
-                imageFrame.setImageTransformation(ImageFrame.identicalImageTransformation());
-            }
-
-            @Override
-            public @NotNull BufferedImage actionImage() {
-                return new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB); //TODO Add image
-            }
-
-            @Override
-            public @NotNull String name() {
-                return "Filtered Image";
-            }
-
-            @Override
-            public @NotNull String description() {
-                return "Show filtered image";
-            }
-        };
+        return filterInteraction;
     }
 }

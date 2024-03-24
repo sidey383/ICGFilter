@@ -84,6 +84,7 @@ public class ImagePanel extends JPanel implements MouseListener, MouseMotionList
 
     public void setInterpolationMode(Object interpolationMode) {
         this.interpolationMode = interpolationMode;
+        scrollPane.repaint();
     }
 
     @Override

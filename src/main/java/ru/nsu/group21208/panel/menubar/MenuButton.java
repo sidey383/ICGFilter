@@ -14,9 +14,9 @@ public class MenuButton<T> extends JMenuItem implements ActionListener {
     private final ToggleActor<T> actor;
 
     public MenuButton(ToggleActor<T> actor, InteractionToggle<T> interaction) {
-        super();
-        setName(interaction.name());
+        super(interaction.name());
         setToolTipText(interaction.description());
+        addActionListener(this);
         this.interaction = interaction;
         this.actor = actor;
     }

@@ -12,7 +12,8 @@ public class MenuModeToggleActor<T> extends JMenu implements ToggleActor<T> {
     private final HashMap<T, MenuButton<T>> modeToButton = new HashMap<>();
     private final ButtonGroup buttonGroup = new ButtonGroup();
 
-    public MenuModeToggleActor(Toggle<T> toggle) {
+    public MenuModeToggleActor(Toggle<T> toggle, String name) {
+        super(name);
         toggle.addToggleActor(this);
     }
 

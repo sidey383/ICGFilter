@@ -7,6 +7,7 @@ import ru.nsu.group21208.interaction.toggle.ToggleActor;
 import ru.nsu.group21208.visualization.ImageFrame;
 
 import javax.swing.*;
+import java.util.List;
 
 public class ShowModeInteractionsImpl extends AbstractToggle<ShowModeInteractions.Mode> implements ShowModeInteractions {
     private final ImageFrame imageFrame;
@@ -19,6 +20,7 @@ public class ShowModeInteractionsImpl extends AbstractToggle<ShowModeInteraction
         this.imageFrame = imageFrame;
         this.realModeInteraction = new ModeInteractionToggle(real, Mode.REAL);
         this.adaptableModeInteraction = new ModeInteractionToggle(adaptable, Mode.ADAPTABLE);
+        setAvailableItems(List.of(Mode.values()));
     }
     @Override
     public InteractionToggle<Mode> realModeInteraction() {
