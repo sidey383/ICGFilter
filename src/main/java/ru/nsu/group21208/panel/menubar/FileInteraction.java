@@ -6,6 +6,7 @@ import javax.swing.*;
 
 public class FileInteraction extends JMenu {
     public FileInteraction(FileInteractions fileInteractions) {
+        super("File");
         add(new InteractionMenuItem(fileInteractions.openFileInteraction()));
         add(new InteractionMenuItem(fileInteractions.saveFileInteraction()));
     }

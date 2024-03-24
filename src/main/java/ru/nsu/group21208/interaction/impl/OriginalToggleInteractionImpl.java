@@ -7,6 +7,7 @@ import ru.nsu.group21208.interaction.toggle.ToggleActor;
 import ru.nsu.group21208.visualization.ImageFrame;
 
 import javax.swing.*;
+import java.util.List;
 
 public class OriginalToggleInteractionImpl extends AbstractToggle<OriginalToggleInteraction.Mode> implements OriginalToggleInteraction {
 
@@ -19,7 +20,7 @@ public class OriginalToggleInteractionImpl extends AbstractToggle<OriginalToggle
             @Override
             public void toggle(JComponent component, ToggleActor<Mode> actor) {
                 OriginalToggleInteractionImpl.super.toggle(actor, Mode.ORIGINAL);
-                imageFrame.setImageTransformation(ImageFrame.identicalImageTransformation());
+                imageFrame.showOriginal(true);
             }
         };
 
@@ -27,9 +28,10 @@ public class OriginalToggleInteractionImpl extends AbstractToggle<OriginalToggle
             @Override
             public void toggle(JComponent component, ToggleActor<Mode> actor) {
                 OriginalToggleInteractionImpl.super.toggle(actor, Mode.FILTER);
-                imageFrame.setImageTransformation(ImageFrame.identicalImageTransformation());
+                imageFrame.showOriginal(false);
             }
         };
+        setAvailableItems(List.of(Mode.values()));
 
     }
     @Override

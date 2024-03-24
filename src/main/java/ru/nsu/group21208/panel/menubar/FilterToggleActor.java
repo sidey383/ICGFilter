@@ -14,15 +14,17 @@ public class FilterToggleActor<T extends InteractionToggle<T>> extends JMenu imp
     private final ButtonGroup buttonGroup = new ButtonGroup();
 
     public FilterToggleActor(FilterInteractions<T> filterInteractions) {
+        super("Filters");
         filterInteractions.addToggleActor(this);
         for (FilterInteractionsGroup<T> group : filterInteractions.filterGroups()) {
-            JMenu menuGroup = new JMenu();
+            JMenu menuGroup = new JMenu(group.name());
             menuGroup.setName(group.name());
             for (T filter : group.filterInteractions()) {
                 MenuButton<T> button = new MenuButton<>(this, filter);
                 buttonGroup.add(button);
                 modeToButton.put(filter, button);
                 menuGroup.add(button);
+                button.addActionListener((a) -> filter.toggle(button, this));
             }
             add(menuGroup);
         }

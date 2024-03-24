@@ -90,7 +90,7 @@ public class App extends JFrame {
         ));
 
         setJMenuBar(new MenuBar(storage));
-        add(new ToolBar(storage));
+        add(new ToolBar(storage), BorderLayout.NORTH);
         add(imageFrame.getShowComponent());
 
         pack();

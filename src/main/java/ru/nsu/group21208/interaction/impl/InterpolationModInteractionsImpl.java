@@ -7,6 +7,7 @@ import ru.nsu.group21208.interaction.toggle.ToggleActor;
 import ru.nsu.group21208.visualization.ImageFrame;
 
 import javax.swing.*;
+import java.util.List;
 
 public class InterpolationModInteractionsImpl extends AbstractToggle<InterpolationModInteractions.Mode> implements InterpolationModInteractions{
     private final ImageFrame imageFrame;
@@ -22,6 +23,7 @@ public class InterpolationModInteractionsImpl extends AbstractToggle<Interpolati
         this.bilinearInteraction = new ModeInteractionToggle(bilinear, Mode.BILINEAR);
         this.bicubicInteraction = new ModeInteractionToggle(bicubic, Mode.BICUBIC);
         this.nearestNeighborInteraction = new ModeInteractionToggle(nearest, Mode.NEAREST_NEIGHBOR);
+        setAvailableItems(List.of(Mode.values()));
     }
     @Override
     public InteractionToggle<Mode> bilinearInteraction() {
