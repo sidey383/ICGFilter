@@ -12,19 +12,23 @@ import java.util.Set;
 
 public class AbstractToggle<T> implements Toggle<T> {
 
+    private T selected = null;
+
     private Set<T> availableItems = Set.of();
 
     private final Set<ToggleActor<T>> actors = new HashSet<>();
 
     public AbstractToggle() {}
 
-    protected void setAvailableItems(Collection<T> items) {
+    protected void setAvailableItems(Collection<T> items, T selected) {
         this.availableItems = Collections.unmodifiableSet(new HashSet<>(items));
+        this.selected = selected;
     }
 
     @Override
     public void addToggleActor(@NotNull ToggleActor<T> actor) {
         actors.add(actor);
+        actor.toggle(selected);
     }
 
     @Override

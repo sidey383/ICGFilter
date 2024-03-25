@@ -17,7 +17,7 @@ public class FilterDialogHolder<T extends FilterParams> implements WindowListene
 
     private final Consumer<ImageTransformation> transformationConsumer;
 
-    FilterDialogHolder(JComponent parent, Filter<T> filter , FilterEditor<T> editor, JComponent editorComponent, Consumer<ImageTransformation> transformationConsumer) {
+    FilterDialogHolder(Point defaultPosition, JComponent parent, Filter<T> filter , FilterEditor<T> editor, JComponent editorComponent, Consumer<ImageTransformation> transformationConsumer) {
         this.transformationConsumer = transformationConsumer;
 
 
@@ -47,12 +47,19 @@ public class FilterDialogHolder<T extends FilterParams> implements WindowListene
         dialog.pack();
         Dimension dimension = dialog.getSize();
         dialog.setMinimumSize(dimension);
-        Point p = parent.getLocationOnScreen();
+        Point p = getPointFromComponent(parent, defaultPosition);
         dialog.setVisible(true);
         dialog.setLocation(p);
         dialog.setAlwaysOnTop(true);
         dialog.addWindowListener(this);
         dialog.setVisible(true);
+    }
+
+    private Point getPointFromComponent(Component component, Point def) {
+        while (component != null && !component.isShowing()) {
+            component = component.getParent();
+        }
+        return component == null ? def : component.getLocationOnScreen();
     }
 
     @Override

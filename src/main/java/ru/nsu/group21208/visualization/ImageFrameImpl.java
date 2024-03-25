@@ -13,6 +13,7 @@ public class ImageFrameImpl implements ImageFrame {
     private BufferedImage originalImage = null;
     private BufferedImage modifiedImage = originalImage;
     private ImageTransformation transformation = ImageFrame.identicalImageTransformation();
+    private boolean showOriginal = false;
 
     public ImageFrameImpl() {
         panel = new ImagePanel(scrollPane);
@@ -27,7 +28,7 @@ public class ImageFrameImpl implements ImageFrame {
     public void setOriginalImage(@Nullable BufferedImage image) {
         originalImage = image;
         modifiedImage = transformation.transformation(originalImage);
-        panel.setImage(modifiedImage);
+        setPanelImage();
     }
 
     @Override
@@ -38,6 +39,12 @@ public class ImageFrameImpl implements ImageFrame {
     @Override
     public BufferedImage getModifiedImage() {
         return modifiedImage;
+    }
+
+    @Override
+    public void showOriginal(boolean value) {
+        showOriginal = value;
+        setPanelImage();
     }
 
     @Override
@@ -58,7 +65,18 @@ public class ImageFrameImpl implements ImageFrame {
     @Override
     public void setImageTransformation(@NotNull ImageTransformation transformation) {
         this.transformation = transformation;
-        modifiedImage = transformation.transformation(originalImage);
-        panel.setImage(modifiedImage);
+        if (originalImage != null) {
+            modifiedImage = transformation.transformation(originalImage);
+            setPanelImage();
+        }
+    }
+
+    private void setPanelImage() {
+        if (showOriginal) {
+            panel.setImage(originalImage);
+        }
+        else {
+            panel.setImage(modifiedImage);
+        }
     }
 }

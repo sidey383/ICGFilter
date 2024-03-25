@@ -30,11 +30,11 @@ public class FilterInteractionImpl extends AbstractToggle<FilterHolder<?>> imple
         List<FilterHolder<?>> filterHolders = new ArrayList<>();
         List<FilterInteractionsGroup<FilterHolder<?>>> interactionGroups = new ArrayList<>();
         for (FilterGroup group : groups) {
-            FilterInteractionsGroup<FilterHolder<?>> interactionsGroup = new FilterInteractionGroupImpl(this, group);
+            FilterInteractionsGroup<FilterHolder<?>> interactionsGroup = new FilterInteractionGroupImpl(this, group, frame.getShowComponent());
             interactionGroups.add(interactionsGroup);
             filterHolders.addAll(interactionsGroup.filterInteractions());
         }
-        setAvailableItems(filterHolders);
+        setAvailableItems(filterHolders, null);
         this.filterHolders = filterHolders;
         this.interactionGroups = interactionGroups;
     }

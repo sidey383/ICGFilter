@@ -9,6 +9,7 @@ import ru.nsu.group21208.interaction.toggle.InteractionToggle;
 import ru.nsu.group21208.interaction.toggle.ToggleActor;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ConcurrentModificationException;
 import java.util.function.Consumer;
@@ -25,7 +26,10 @@ public class FilterHolder<T extends FilterParams> implements InteractionToggle<F
 
     private final FilterInteractionImpl parent;
 
-    public FilterHolder(FilterInteractionImpl parent, FilterInfo<T> info) {
+    private final Component baseComponent;
+
+    public FilterHolder(FilterInteractionImpl parent, FilterInfo<T> info, Component baseComponent) {
+        this.baseComponent = baseComponent;
         this.parent = parent;
         this.image = info.getImage();
         this.name = info.getName();
@@ -66,6 +70,6 @@ public class FilterHolder<T extends FilterParams> implements InteractionToggle<F
             return;
         }
 
-        new FilterDialogHolder<>(component, filter, editor, editorComponent, consumer);
+        new FilterDialogHolder<>(baseComponent.getLocation(), component, filter, editor, editorComponent, consumer);
     }
 }
