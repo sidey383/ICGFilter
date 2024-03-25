@@ -17,7 +17,7 @@ public class FilterDialogHolder<T extends FilterParams> implements WindowListene
 
     private final Consumer<ImageTransformation> transformationConsumer;
 
-    FilterDialogHolder(Point defaultPosition, JComponent parent, Filter<T> filter , FilterEditor<T> editor, JComponent editorComponent, Consumer<ImageTransformation> transformationConsumer) {
+    FilterDialogHolder(Point defaultPosition, JComponent parent, Filter<T> filter, FilterEditor<T> editor, JComponent editorComponent, Consumer<ImageTransformation> transformationConsumer) {
         this.transformationConsumer = transformationConsumer;
 
 
@@ -26,15 +26,35 @@ public class FilterDialogHolder<T extends FilterParams> implements WindowListene
             return;
         }
 
-        JButton acceptButton = new JButton("apply");
+        JPanel buttonsPanel = new JPanel();
+        buttonsPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+
+        JButton acceptButton = new JButton("Apply");
         acceptButton.addActionListener((e) -> {
             synchronized (FilterDialogHolder.this) {
-                transformationConsumer.accept(filter.apply(editor.build()));
-                JDialog tempDialog = dialog;
-                dialog = null;
-                tempDialog.dispatchEvent(new WindowEvent(tempDialog, WindowEvent.WINDOW_CLOSING));
+                if (dialog != null) {
+                    transformationConsumer.accept(filter.apply(editor.build()));
+                    JDialog tempDialog = dialog;
+                    dialog = null;
+                    tempDialog.dispatchEvent(new WindowEvent(tempDialog, WindowEvent.WINDOW_CLOSING));
+                }
             }
         });
+
+        JButton cancelButton = new JButton("Cancel");
+        cancelButton.addActionListener((e) -> {
+            synchronized (FilterDialogHolder.this) {
+                if (dialog != null) {
+                    transformationConsumer.accept(null);
+                    JDialog tempDialog = dialog;
+                    dialog = null;
+                    tempDialog.dispatchEvent(new WindowEvent(tempDialog, WindowEvent.WINDOW_CLOSING));
+                }
+            }
+        });
+
+        buttonsPanel.add(acceptButton);
+        buttonsPanel.add(cancelButton);
 
         this.dialog = new JDialog();
         dialog.getContentPane().setLayout(new BoxLayout(dialog.getContentPane(), BoxLayout.Y_AXIS));
@@ -42,7 +62,8 @@ public class FilterDialogHolder<T extends FilterParams> implements WindowListene
 
         dialog.getContentPane().setLayout(new BoxLayout(dialog.getContentPane(), BoxLayout.Y_AXIS));
         dialog.getContentPane().add(editorComponent);
-        dialog.getContentPane().add(acceptButton);
+        dialog.getContentPane().add(buttonsPanel);
+        dialog.addWindowListener(this);
 
         dialog.pack();
         Dimension dimension = dialog.getSize();
@@ -63,30 +84,39 @@ public class FilterDialogHolder<T extends FilterParams> implements WindowListene
     }
 
     @Override
-    public void windowOpened(WindowEvent e) {}
+    public void windowOpened(WindowEvent e) {
+    }
 
     @Override
     public synchronized void windowClosing(WindowEvent e) {
-        if (dialog != null)
+        if (dialog != null) {
             transformationConsumer.accept(null);
+            dialog = null;
+        }
     }
 
     @Override
     public synchronized void windowClosed(WindowEvent e) {
-        if (dialog != null)
+        if (dialog != null) {
             transformationConsumer.accept(null);
+            dialog = null;
+        }
     }
 
     @Override
-    public void windowIconified(WindowEvent e) {}
+    public void windowIconified(WindowEvent e) {
+    }
 
     @Override
-    public void windowDeiconified(WindowEvent e) {}
+    public void windowDeiconified(WindowEvent e) {
+    }
 
     @Override
-    public void windowActivated(WindowEvent e) {}
+    public void windowActivated(WindowEvent e) {
+    }
 
     @Override
-    public void windowDeactivated(WindowEvent e) {}
+    public void windowDeactivated(WindowEvent e) {
+    }
 
 }

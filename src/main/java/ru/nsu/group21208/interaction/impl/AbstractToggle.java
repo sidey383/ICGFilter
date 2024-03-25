@@ -33,7 +33,7 @@ public class AbstractToggle<T> implements Toggle<T> {
 
     @Override
     public void toggle(@Nullable ToggleActor<T> source, @Nullable T item) throws IllegalArgumentException {
-        if (!availableItems.contains(item))
+        if (item != null && !availableItems.contains(item))
             throw new IllegalArgumentException("Unregistered item");
         for (ToggleActor<T> a : actors) {
             if (a == source)
