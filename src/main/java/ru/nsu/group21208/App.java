@@ -122,6 +122,8 @@ public class App extends JFrame {
                 )
         ));
 
+        imageFrame.setOriginalToggle(storage.getOriginalToggleInteraction());
+
         setJMenuBar(new MenuBar(storage));
         add(new ToolBar(storage), BorderLayout.NORTH);
         add(imageFrame.getShowComponent());
