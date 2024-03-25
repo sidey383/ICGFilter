@@ -4,6 +4,7 @@ import ru.nsu.group21208.filter.dyachenko.FSDitheringFilter;
 import ru.nsu.group21208.filter.dyachenko.GammaFilter;
 import ru.nsu.group21208.filter.dyachenko.OrderedDitheringFilter;
 import ru.nsu.group21208.filter.dyachenko.RotationFilter;
+import ru.nsu.group21208.filter.naida.DitheringFilter;
 import ru.nsu.group21208.filter.ponomarev.EmbossingFilter;
 import ru.nsu.group21208.filter.ponomarev.RotateFilter;
 import ru.nsu.group21208.interaction.impl.*;
@@ -118,6 +119,17 @@ public class App extends JFrame {
                                         )
                                 ),
                                 "dyachenko"
+                        ),
+                        new FilterGroup(
+                                List.of(
+                                        new FilterInfo<>(
+                                                new DitheringFilter(),
+                                                createTextBufferedImage("Dith"),
+                                                "Dithering",
+                                                "Dithering filter"
+                                        )
+                                ),
+                                "naida"
                         )
                 )
         ));
