@@ -2,6 +2,7 @@ package ru.nsu.group21208.filter.dyachenko;
 
 import ru.nsu.group21208.filter.ImageTransformation;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -18,6 +19,9 @@ public class RobertsTransformation implements ImageTransformation {
         int width = image.getWidth();
         int height = image.getHeight();
         BufferedImage newImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        Graphics g = newImage.getGraphics();
+        g.setColor(Color.BLACK);
+        g.fillRect(0,0,width,height);
         applyForColor(image, newImage, ColorUtils::getRed, ColorUtils::setRed, threshold);
         applyForColor(image, newImage, ColorUtils::getGreen, ColorUtils::setGreen, threshold);
         applyForColor(image, newImage, ColorUtils::getRed, ColorUtils::setRed, threshold);
