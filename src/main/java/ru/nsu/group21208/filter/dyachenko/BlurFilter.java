@@ -71,8 +71,8 @@ public class BlurFilter extends KernelFilter<BaseFilterParams> {
         M3X3(16, MAT3X3),
         M5X5(273, MAT5X5),
         M7X7(49, MAT7X7),
-        M9X9(9, MAT9X9),
-        M11X11(11, MAT11X11);
+        M9X9(81, MAT9X9),
+        M11X11(121, MAT11X11);
 
         public final int divider;
         public final int[][] mat;
