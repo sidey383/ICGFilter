@@ -57,8 +57,8 @@ public abstract class KernelFilter<T extends FilterParams> implements Filter<T> 
             if (!isWorkOnEdge(params) && (
                     x - halfKernelSize < 0 ||
                     y - halfKernelSize < 0 ||
-                    x + halfKernelSize < image.getWidth() ||
-                    y + halfKernelSize < image.getHeight())
+                    x + halfKernelSize >= image.getWidth() ||
+                    y + halfKernelSize >= image.getHeight())
             ) {
                 return image.getRGB(x, y);
             }

@@ -5,7 +5,7 @@ import ru.nsu.group21208.filter.dyachenko.GammaFilter;
 import ru.nsu.group21208.filter.dyachenko.OrderedDitheringFilter;
 import ru.nsu.group21208.filter.dyachenko.RotationFilter;
 import ru.nsu.group21208.filter.ponomarev.EmbossingFilter;
-import ru.nsu.group21208.filter.ponomarev.RotateFilter;
+import ru.nsu.group21208.filter.ponomarev.OrderDithering;
 import ru.nsu.group21208.interaction.impl.*;
 import ru.nsu.group21208.interaction.impl.filter.FilterGroup;
 import ru.nsu.group21208.interaction.impl.filter.FilterInfo;
@@ -75,21 +75,17 @@ public class App extends JFrame {
                                                 createTextBufferedImage("Embos"),
                                                 "Embossing",
                                                 "Embossing filter"
-                                        )
-                                ),
-                                "kernel"
-                        ),
-                        new FilterGroup(
-                                List.of(
+                                        ),
                                         new FilterInfo<>(
-                                                new RotateFilter(),
-                                                createTextBufferedImage("Rot"),
-                                                "Rotate",
-                                                "Rotate filter"
+                                                new OrderDithering(),
+                                                createTextBufferedImage("Ordered"),
+                                                "Ordered ditherong",
+                                                "Ordered dithering fio filter"
                                         )
                                 ),
-                                "rotate"
+                                "ponomarev"
                         ),
+
                         new FilterGroup(
                                 List.of(
                                         new FilterInfo<>(
