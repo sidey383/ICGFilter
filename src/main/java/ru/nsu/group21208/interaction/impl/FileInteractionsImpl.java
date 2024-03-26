@@ -11,6 +11,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Locale;
 
 public class FileInteractionsImpl implements FileInteractions {
     
@@ -41,12 +42,39 @@ public class FileInteractionsImpl implements FileInteractions {
         this.saveButton = new InteractionImpl(saveButton) {
             @Override
             public void apply(JComponent action) {
+                BufferedImage image = imageFrame.getModifiedImage();
+                if (image == null) {
+                    JOptionPane.showMessageDialog(null, "No image to save!");
+                    return;
+                }
                 JFileChooser fileChooser = new JFileChooser();
+                FileNameExtensionFilter pngFilter = new FileNameExtensionFilter("PNG file", "png");
+                FileNameExtensionFilter jpgFilter = new FileNameExtensionFilter("JPEG file", "jpg", "jpeg");
+                FileNameExtensionFilter gifFilter = new FileNameExtensionFilter("GIF file", "gif");
+                fileChooser.setFileFilter(jpgFilter);
+                fileChooser.addChoosableFileFilter(pngFilter);
+                fileChooser.addChoosableFileFilter(jpgFilter);
+                fileChooser.addChoosableFileFilter(gifFilter);
                 int res = fileChooser.showSaveDialog(action);
                 if (res == JFileChooser.APPROVE_OPTION) {
                     File out = new File(fileChooser.getSelectedFile().getAbsolutePath());
+                    final String extension;
+                    if (fileChooser.getFileFilter() == pngFilter) {
+                        extension = "PNG";
+                    } else if (fileChooser.getFileFilter() == gifFilter) {
+                        extension = "GIF";
+                    }  else {
+                        extension = "jpg";
+                    }
+                    if (!out.exists() && out.getName().lastIndexOf(".") == -1) {
+                        File  nOut = new File(out.getParentFile(), out.getName() + "." + extension.toLowerCase(Locale.ENGLISH));
+                        if (!nOut.exists())
+                            out = nOut;
+                    }
                     try {
-                        ImageIO.write(imageFrame.getModifiedImage(), "JPG", out);
+                        if (!ImageIO.write(image, extension, out)) {
+                            JOptionPane.showMessageDialog(null, "Can't write this image in selected format");
+                        }
                     }
                     catch (IOException ex) {
                         JOptionPane.showMessageDialog(null, "Wrong file!");
@@ -63,6 +91,7 @@ public class FileInteractionsImpl implements FileInteractions {
         FileNameExtensionFilter jpgFilter = new FileNameExtensionFilter("JPEG file", "jpg", "jpeg");
         FileNameExtensionFilter gifFilter = new FileNameExtensionFilter("GIF file", "gif");
         FileNameExtensionFilter bmpFilter = new FileNameExtensionFilter("BMP file", "bmp");
+        fileChooser.setFileFilter(jpgFilter);
         fileChooser.addChoosableFileFilter(pngFilter);
         fileChooser.addChoosableFileFilter(jpgFilter);
         fileChooser.addChoosableFileFilter(gifFilter);

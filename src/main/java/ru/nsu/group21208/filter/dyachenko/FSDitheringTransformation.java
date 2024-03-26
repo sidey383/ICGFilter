@@ -1,8 +1,8 @@
 package ru.nsu.group21208.filter.dyachenko;
 
+import ru.nsu.group21208.filter.Filter;
 import ru.nsu.group21208.filter.ImageTransformation;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -22,9 +22,7 @@ public class FSDitheringTransformation implements ImageTransformation {
 
     @Override
     public BufferedImage transformation(BufferedImage image) {
-        int width = image.getWidth();
-        int height = image.getHeight();
-        BufferedImage newImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage newImage = Filter.copyOfImage(image);
         ditherColor(image, newImage, ColorUtils::getRed, ColorUtils::setRed, redColors);
         ditherColor(newImage, newImage, ColorUtils::getGreen, ColorUtils::setGreen, greenColors);
         ditherColor(newImage, newImage, ColorUtils::getBlue, ColorUtils::setBlue, blueColors);
