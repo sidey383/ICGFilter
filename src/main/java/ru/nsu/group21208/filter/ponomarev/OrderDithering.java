@@ -86,9 +86,9 @@ public class OrderDithering implements Filter<BaseFilterParams> {
 
         Transformation(int r, int g, int b) {
             this.palette = new RGBPalette(r, g, b);
-            this.rMatrix = DitheringMatrix.createByColorCount(Math.max(Math.max(r, g), b));
-            this.gMatrix = this.rMatrix;
-            this.bMatrix = this.gMatrix;
+            this.rMatrix = DitheringMatrix.createByColorCount(r);
+            this.gMatrix = DitheringMatrix.createByColorCount(g);
+            this.bMatrix = DitheringMatrix.createByColorCount(b);
             this.rTh = 256 / (r - 1);
             this.gTh = 256 / (g - 1);
             this.bTh = 256 / (b - 1);
