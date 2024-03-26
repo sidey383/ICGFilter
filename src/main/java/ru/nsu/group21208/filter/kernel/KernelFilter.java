@@ -35,7 +35,7 @@ public abstract class KernelFilter<T extends FilterParams> implements Filter<T> 
             int width = image.getWidth();
             int height = image.getHeight();
 
-            BufferedImage result = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+            BufferedImage result = Filter.copyOfImage(image);
 
             // Iterate over each pixel of the image
             for (int y = 0; y < height; y++) {

@@ -1,5 +1,6 @@
 package ru.nsu.group21208.filter.dyachenko;
 
+import ru.nsu.group21208.filter.Filter;
 import ru.nsu.group21208.filter.ImageTransformation;
 
 import java.awt.*;
@@ -33,7 +34,7 @@ public class RotationTransformation implements ImageTransformation {
         int newHeight = (int) Math.ceil(
                 Math.abs(width * Math.sin(angle)) + Math.abs(height * Math.cos(angle))
         );
-        BufferedImage newImage = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage newImage = Filter.copyOfImage(image);
 
         double cx = width / 2.0;
         double cy = height / 2.0;
@@ -65,7 +66,7 @@ public class RotationTransformation implements ImageTransformation {
         int width = image.getWidth();
         int height = image.getHeight();
 
-        BufferedImage result = new BufferedImage(height, width, image.getType());
+        BufferedImage result = Filter.copyOfImage(image);
 
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
@@ -80,7 +81,7 @@ public class RotationTransformation implements ImageTransformation {
         int width = image.getWidth();
         int height = image.getHeight();
 
-        BufferedImage result = new BufferedImage(width, height, image.getType());
+        BufferedImage result = Filter.copyOfImage(image);
 
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
@@ -95,7 +96,7 @@ public class RotationTransformation implements ImageTransformation {
         int width = image.getWidth();
         int height = image.getHeight();
 
-        BufferedImage result = new BufferedImage(height, width, image.getType());
+        BufferedImage result = Filter.copyOfImage(image);
 
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {

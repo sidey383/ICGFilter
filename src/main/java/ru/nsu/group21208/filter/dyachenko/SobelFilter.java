@@ -28,7 +28,7 @@ public class SobelFilter implements Filter<BaseFilterParams> {
         return (image) -> {
             int width = image.getWidth();
             int height = image.getHeight();
-            BufferedImage newImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+            BufferedImage newImage = Filter.copyOfImage(image);
             Graphics g = newImage.getGraphics();
             g.setColor(Color.BLACK);
             g.fillRect(0,0,width,height);
