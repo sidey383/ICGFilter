@@ -47,35 +47,40 @@ public class ImagePanel extends JPanel implements MouseListener, MouseMotionList
     public void setImage(@Nullable BufferedImage image) {
         this.image = image;
         if (image == null) {
-            setPreferredSize(new Dimension());
-            repaint();
-            scrollPane.updateUI();
+            setPreferredSize(null);
+            setSize(0, 0);
+            scrollPane.revalidate();
+            scrollPane.repaint();
             return;
         }
         if (!isAdaptive) {
             int width = image.getWidth() + 2 * (EFFECTIVE_PADDING);
             int height = image.getHeight() + 2 * (EFFECTIVE_PADDING);
             setPreferredSize(new Dimension(width, height));
+            setSize(width, height);
         }
         else {
-            setPreferredSize(new Dimension());
+            setPreferredSize(null);
+            setSize(0, 0);
         }
-        repaint();
-        scrollPane.updateUI();
+        scrollPane.revalidate();
+        scrollPane.repaint();
     }
 
     public void setAdaptive(boolean adaptive) {
         isAdaptive = adaptive;
         if (adaptive) {
-            setPreferredSize(new Dimension());
+            setPreferredSize(null);
+            setSize(0, 0);
         }
         else if (image != null) {
             int width = image.getWidth() + 2 * (EFFECTIVE_PADDING);
             int height = image.getHeight() + 2 * (EFFECTIVE_PADDING);
             setPreferredSize(new Dimension(width, height));
+            setSize(width, height);
         }
-        repaint();
-        scrollPane.updateUI();
+        scrollPane.revalidate();
+        scrollPane.repaint();
     }
 
     public void setDraggingEnabled(boolean draggingEnabled) {
