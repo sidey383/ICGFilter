@@ -27,7 +27,7 @@ public class ColorShiftFilter implements Filter<BaseFilterParams> {
         return (image) -> {
             int width = image.getWidth();
             int height = image.getHeight();
-            BufferedImage newImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+            BufferedImage newImage = Filter.copyOfImage(image);
             for (int h = vshift; h < height - vshift; ++h) {
                 for (int w = hshift; w < width - hshift; ++w) {
                     int r = image.getRGB(w + hshift, h + vshift) & 0x00ff0000;
