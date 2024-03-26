@@ -5,6 +5,7 @@ import ru.nsu.group21208.filter.dyachenko.GammaFilter;
 import ru.nsu.group21208.filter.dyachenko.OrderedDitheringFilter;
 import ru.nsu.group21208.filter.dyachenko.RotationFilter;
 import ru.nsu.group21208.filter.ponomarev.EmbossingFilter;
+import ru.nsu.group21208.filter.ponomarev.FloydSteinbergDithering;
 import ru.nsu.group21208.filter.ponomarev.OrderDithering;
 import ru.nsu.group21208.interaction.impl.*;
 import ru.nsu.group21208.interaction.impl.filter.FilterGroup;
@@ -79,8 +80,14 @@ public class App extends JFrame {
                                         new FilterInfo<>(
                                                 new OrderDithering(),
                                                 createTextBufferedImage("Ordered"),
-                                                "Ordered ditherong",
-                                                "Ordered dithering fio filter"
+                                                "Ordered dithering",
+                                                "Ordered dithering filter"
+                                        ),
+                                        new FilterInfo<>(
+                                                new FloydSteinbergDithering(),
+                                                createTextBufferedImage("Floyd"),
+                                                "Floyd Steinberg dithering",
+                                                "Floyd Steinberg dithering filter"
                                         )
                                 ),
                                 "ponomarev"
