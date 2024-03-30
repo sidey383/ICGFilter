@@ -3,18 +3,17 @@ package ru.nsu.group21208.filter.general;
 import ru.nsu.group21208.filter.Filter;
 import ru.nsu.group21208.filter.FilterEditor;
 import ru.nsu.group21208.filter.ImageTransformation;
-import ru.nsu.group21208.filter.base.BaseFilterEditor;
-import ru.nsu.group21208.filter.base.BaseFilterParams;
+import ru.nsu.group21208.filter.base.EmptyEditor;
+import ru.nsu.group21208.filter.base.EmptyParams;
 
-public class InvertFilter implements Filter<BaseFilterParams> {
-    private final BaseFilterEditor editor = new BaseFilterEditor();
+public class InvertFilter implements Filter<EmptyParams> {
     @Override
-    public FilterEditor<BaseFilterParams> createFilterEditor() {
-        return editor;
+    public FilterEditor<EmptyParams> createFilterEditor() {
+        return EmptyEditor.getInstance();
     }
 
     @Override
-    public ImageTransformation apply(BaseFilterParams parameters) {
+    public ImageTransformation apply(EmptyParams parameters) {
         return new InvertFilterTransformation();
     }
 }
