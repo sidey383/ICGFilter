@@ -27,9 +27,15 @@ public class FileInteractionsImpl implements FileInteractions {
                 int res = fileChooser.showOpenDialog(action);
                 if (res == JFileChooser.APPROVE_OPTION) {
                     try {
-                        BufferedImage img = ImageIO.read(fileChooser.getSelectedFile());
-                        if (img == null) {
+                        BufferedImage tempImg = ImageIO.read(fileChooser.getSelectedFile());
+                        if (tempImg == null) {
                             throw new IOException();
+                        }
+                        BufferedImage img = new BufferedImage(tempImg.getWidth(), tempImg.getHeight(), BufferedImage.TYPE_INT_RGB);
+                        for (int i = 0; i < tempImg.getHeight(); ++i) {
+                            for (int j = 0; j < tempImg.getWidth(); ++j) {
+                                img.setRGB(j, i, tempImg.getRGB(j, i));
+                            }
                         }
                         imageFrame.setOriginalImage(img);
                     }
