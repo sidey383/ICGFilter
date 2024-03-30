@@ -2,6 +2,7 @@ package ru.nsu.group21208;
 
 import ru.nsu.group21208.filter.FilterParams;
 import ru.nsu.group21208.filter.dyachenko.*;
+import ru.nsu.group21208.filter.general.SharpeningFilter;
 import ru.nsu.group21208.filter.ponomarev.EmbossingFilter;
 import ru.nsu.group21208.filter.ponomarev.RotateFilter;
 import ru.nsu.group21208.interaction.impl.*;
@@ -134,6 +135,17 @@ public class App extends JFrame {
                                         )
                                 ),
                                 "dyachenko"
+                        ),
+                        new FilterGroup(
+                                List.of(
+                                        new FilterInfo<>(
+                                                new SharpeningFilter(),
+                                                createTextBufferedImage("Sharp"),
+                                                "Sharp",
+                                                "Sharp"
+                                        )
+                                ),
+                                "general"
                         )
                 )
         ));
