@@ -12,7 +12,7 @@ public interface Filter<T extends FilterParams> {
      * Создает копию изображения без картинки
      * **/
     static BufferedImage copyOfImage(BufferedImage image) {
-        return new BufferedImage(image.getWidth(), image.getHeight(), image.getType());
+        return new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
     }
 
 }
