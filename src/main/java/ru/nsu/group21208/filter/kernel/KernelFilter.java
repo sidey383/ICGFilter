@@ -98,7 +98,7 @@ public abstract class KernelFilter<T extends FilterParams> implements Filter<T> 
             b = Math.min(Math.max(b / kernelDivider, 0), 255);
 
             // Compose new pixel value
-            return (r << 16) | (g << 8) | b;
+            return 0xFF000000 | (r << 16) | (g << 8) | b;
         }
 
     }
