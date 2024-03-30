@@ -2,6 +2,7 @@ package ru.nsu.group21208;
 
 import ru.nsu.group21208.filter.FilterParams;
 import ru.nsu.group21208.filter.dyachenko.*;
+import ru.nsu.group21208.filter.general.SharpeningFilter;
 import ru.nsu.group21208.filter.general.InvertFilter;
 import ru.nsu.group21208.filter.general.GrayFilter;
 import ru.nsu.group21208.filter.ponomarev.EmbossingFilter;
@@ -140,6 +141,12 @@ public class App extends JFrame {
                         new FilterGroup(
                                 List.of(
                                         new FilterInfo<>(
+                                                new SharpeningFilter(),
+                                                createTextBufferedImage("Sharp"),
+                                                "Sharp",
+                                                "Sharp"
+                                          ),
+                                          new FilterInfo<>(
                                                 new InvertFilter(),
                                                 createTextBufferedImage("Invert"),
                                                 "Invert",
