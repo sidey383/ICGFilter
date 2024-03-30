@@ -3,6 +3,7 @@ package ru.nsu.group21208;
 import ru.nsu.group21208.filter.FilterParams;
 import ru.nsu.group21208.filter.dyachenko.*;
 import ru.nsu.group21208.filter.general.InvertFilter;
+import ru.nsu.group21208.filter.general.GrayFilter;
 import ru.nsu.group21208.filter.ponomarev.EmbossingFilter;
 import ru.nsu.group21208.filter.ponomarev.RotateFilter;
 import ru.nsu.group21208.interaction.impl.*;
@@ -143,6 +144,12 @@ public class App extends JFrame {
                                                 createTextBufferedImage("Invert"),
                                                 "Invert",
                                                 "Invert colors"
+                                          ),
+                                          new FilterInfo<>(
+                                                new GrayFilter(),
+                                                createTextBufferedImage("Gray"),
+                                                "Gray",
+                                                "Gray filter"
                                         )
                                 ),
                                 "general"
