@@ -194,6 +194,17 @@ public class App extends JFrame {
                                         )
                                 ),
                                 "naida"
+                        ),
+                        new FilterGroup(
+                                List.of(
+                                        new FilterInfo<>(
+                                                new ru.nsu.group21208.filter.porotnikov.FSDitheringFilter(),
+                                                createTextBufferedImage("Dith"),
+                                                "Dith",
+                                                "Floyd-Steinberg dithering"
+                                        )
+                                ),
+                                "porotnikov"
                         )
                 )
         ));
