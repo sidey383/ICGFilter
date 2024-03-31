@@ -46,6 +46,8 @@ public class OrderedDitheringTransformation implements ImageTransformation {
             matrixSize = 16;
             matrix = MAT_16X16;
         }
+        int tr = 255 / (quantum - 1);
+        int mssq = matrixSize * matrixSize;
 
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
@@ -53,8 +55,8 @@ public class OrderedDitheringTransformation implements ImageTransformation {
                 int oldColor = newImage.getRGB(x, y);
                 int oldColorComponent = ((oldColor & colorMask) >> shift);
 
-                int matrixValue = (256 * matrix[x % matrixSize][y % matrixSize] - 128 * (matrixSize * matrixSize)) / (matrixSize * matrixSize);
-                int newColorComponent = getNearColor(getColor(oldColorComponent + matrixValue), quantum);
+                int matrixValue = matrix[x % matrixSize][y % matrixSize] - mssq / 2;
+                int newColorComponent = getNearColor(getColor(oldColorComponent + (tr * matrixValue) / mssq), quantum);
                 int newColor = (oldColor & (~colorMask)) | (newColorComponent << shift);
                 newImage.setRGB(x, y, newColor);
             }
@@ -62,19 +64,11 @@ public class OrderedDitheringTransformation implements ImageTransformation {
     }
 
     private int getNearColor(int value, int quantum) {
-        return (((value * (quantum - 1) + 128) / 255) * 255) / (quantum - 1);
+        return (value * quantum / 256) * 255 / (quantum - 1);
     }
 
     private int getColor(int value) {
-        if (value < 0) {
-            return 0;
-        }
-        else if (value > 255) {
-            return 255;
-        }
-        else {
-            return value;
-        }
+        return Math.min(Math.max(0, value), 255);
     }
 
     private final int[][] MAT_2X2 = {
