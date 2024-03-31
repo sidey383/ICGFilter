@@ -1,10 +1,10 @@
 package ru.nsu.group21208;
 
-import ru.nsu.group21208.filter.FilterParams;
 import ru.nsu.group21208.filter.dyachenko.*;
 import ru.nsu.group21208.filter.ponomarev.EmbossingFilter;
 import ru.nsu.group21208.filter.ponomarev.FloydSteinbergDithering;
 import ru.nsu.group21208.filter.ponomarev.OrderDithering;
+import ru.nsu.group21208.filter.ponomarev.RandomRectFilter;
 import ru.nsu.group21208.interaction.impl.*;
 import ru.nsu.group21208.interaction.impl.filter.FilterGroup;
 import ru.nsu.group21208.interaction.impl.filter.FilterInfo;
@@ -86,6 +86,12 @@ public class App extends JFrame {
                                                 createTextBufferedImage("Floyd"),
                                                 "Floyd Steinberg dithering",
                                                 "Floyd Steinberg dithering filter"
+                                        ),
+                                        new FilterInfo<>(
+                                                new RandomRectFilter(),
+                                                createTextBufferedImage("Rand"),
+                                                "Random rectangle filter",
+                                                "Draw rectangles in random places with average colors"
                                         )
                                 ),
                                 "ponomarev"
