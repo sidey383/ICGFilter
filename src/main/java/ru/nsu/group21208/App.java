@@ -1,12 +1,13 @@
 package ru.nsu.group21208;
 
-import ru.nsu.group21208.filter.FilterParams;
 import ru.nsu.group21208.filter.dyachenko.*;
 import ru.nsu.group21208.filter.general.SharpeningFilter;
 import ru.nsu.group21208.filter.general.InvertFilter;
 import ru.nsu.group21208.filter.general.GrayFilter;
 import ru.nsu.group21208.filter.ponomarev.EmbossingFilter;
-import ru.nsu.group21208.filter.ponomarev.RotateFilter;
+import ru.nsu.group21208.filter.ponomarev.FloydSteinbergDithering;
+import ru.nsu.group21208.filter.ponomarev.OrderDithering;
+import ru.nsu.group21208.filter.ponomarev.RandomRectFilter;
 import ru.nsu.group21208.interaction.impl.*;
 import ru.nsu.group21208.interaction.impl.filter.FilterGroup;
 import ru.nsu.group21208.interaction.impl.filter.FilterInfo;
@@ -76,21 +77,29 @@ public class App extends JFrame {
                                                 createTextBufferedImage("Embos"),
                                                 "Embossing",
                                                 "Embossing filter"
-                                        )
-                                ),
-                                "kernel"
-                        ),
-                        new FilterGroup(
-                                List.of(
+                                        ),
                                         new FilterInfo<>(
-                                                new RotateFilter(),
-                                                createTextBufferedImage("Rot"),
-                                                "Rotate",
-                                                "Rotate filter"
+                                                new OrderDithering(),
+                                                createTextBufferedImage("Ordered"),
+                                                "Ordered dithering",
+                                                "Ordered dithering filter"
+                                        ),
+                                        new FilterInfo<>(
+                                                new FloydSteinbergDithering(),
+                                                createTextBufferedImage("Floyd"),
+                                                "Floyd Steinberg dithering",
+                                                "Floyd Steinberg dithering filter"
+                                        ),
+                                        new FilterInfo<>(
+                                                new RandomRectFilter(),
+                                                createTextBufferedImage("Rand"),
+                                                "Random rectangle filter",
+                                                "Draw rectangles in random places with average colors"
                                         )
                                 ),
-                                "rotate"
+                                "ponomarev"
                         ),
+
                         new FilterGroup(
                                 List.of(
                                         new FilterInfo<>(
