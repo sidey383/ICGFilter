@@ -4,14 +4,13 @@ import ru.nsu.group21208.filter.ImageTransformation;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.Arrays;
 
-public class DitheringTransformation implements ImageTransformation {
+public class OrderedDitheringTransformation implements ImageTransformation {
     private final int redQuantum;
     private final int greenQuantum;
     private final int blueQuantum;
 
-    public DitheringTransformation(int redQuantum, int greenQuantum, int blueQuantum) {
+    public OrderedDitheringTransformation(int redQuantum, int greenQuantum, int blueQuantum) {
         this.redQuantum = redQuantum;
         this.greenQuantum = greenQuantum;
         this.blueQuantum = blueQuantum;
@@ -25,29 +24,38 @@ public class DitheringTransformation implements ImageTransformation {
         Graphics graphics = newImage.createGraphics();
         graphics.drawImage(image, 0, 0, null);
 
-        colorDithering(newImage, 0x00ff0000, 16, redQuantum, width, height);
-        colorDithering(newImage, 0x0000ff00, 8, greenQuantum, width, height);
-        colorDithering(newImage, 0x000000ff, 0, blueQuantum, width, height);
+        colorOrderedDithering(newImage, 0x00ff0000, 16, redQuantum, width, height);
+        colorOrderedDithering(newImage, 0x0000ff00, 8, greenQuantum, width, height);
+        colorOrderedDithering(newImage, 0x000000ff, 0, blueQuantum, width, height);
 
         return newImage;
     }
 
-    private void colorDithering(BufferedImage newImage, int colorMask, int shift, int quantum, int width, int height) {
-        int[][] errorArray = new int[height + 1][width + 2];
-        int j = getNearColor(82, 3);
+    private void colorOrderedDithering(BufferedImage newImage, int colorMask, int shift, int quantum, int width, int height) {
+        final int[][] matrix = MAT_2X2.clone();
+        int matrixSize = 2;
+
+        prepareMatrix(matrix, quantum);
+
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
+
                 int oldColor = newImage.getRGB(x, y);
                 int oldColorComponent = ((oldColor & colorMask) >> shift);
-                int oldColorComponentWithError = oldColorComponent + errorArray[y][x + 1];
-                int newColorComponent = getColor(getNearColor(oldColorComponentWithError, quantum));
 
-                int error = oldColorComponentWithError - newColorComponent;
-
+                int matrixValue = (256 * matrix[x % matrixSize][y % matrixSize] - 128 * (matrixSize * matrixSize)) / (matrixSize * matrixSize);
+                int newColorComponent = getNearColor(getColor(oldColorComponent + matrixValue), quantum);
                 int newColor = (oldColor & (~colorMask)) | (newColorComponent << shift);
                 newImage.setRGB(x, y, newColor);
+            }
+        }
+    }
 
-                distributionError(errorArray, error, x, y);
+    private void prepareMatrix(int[][] matrix, int quantum) {
+        int n = matrix[0].length;
+        for (int j = 0; j < n; j++) {
+            for (int i = 0; i < n; i++) {
+                //matrix[j][i] =
             }
         }
     }
@@ -68,10 +76,14 @@ public class DitheringTransformation implements ImageTransformation {
         }
     }
 
-    private void distributionError(int[][] errorArray, int error, int x, int y) {
-        errorArray[y][x + 2] += ((error * 7) >> 4);
-        errorArray[y + 1][x] += ((error * 3) >> 4);
-        errorArray[y + 1][x + 1] += ((error * 5) >> 4);
-        errorArray[y + 1][x + 2] += (error >> 4);
-    }
+    private final int[][] MAT_2X2 = {
+            { 0, 2 },
+            { 3, 1 }
+    };
+    private final int[][] MAT_4X4 = {
+            {  0,  8,  2, 10 },
+            { 12,  4, 14,  6 },
+            {  3, 11,  1,  9 },
+            { 15,  7, 13,  5 }
+    };
 }

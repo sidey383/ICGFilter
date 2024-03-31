@@ -5,6 +5,7 @@ import ru.nsu.group21208.filter.dyachenko.*;
 import ru.nsu.group21208.filter.general.SharpeningFilter;
 import ru.nsu.group21208.filter.general.InvertFilter;
 import ru.nsu.group21208.filter.general.GrayFilter;
+import ru.nsu.group21208.filter.naida.DitheringFilter;
 import ru.nsu.group21208.filter.ponomarev.EmbossingFilter;
 import ru.nsu.group21208.filter.ponomarev.RotateFilter;
 import ru.nsu.group21208.interaction.impl.*;
@@ -160,6 +161,23 @@ public class App extends JFrame {
                                         )
                                 ),
                                 "general"
+                        ),
+                        new FilterGroup(
+                                List.of(
+                                        new FilterInfo<>(
+                                                new DitheringFilter(),
+                                                createTextBufferedImage("Dithering"),
+                                                "Dithering",
+                                                "Dithering"
+                                        ),
+                                        new FilterInfo<>(
+                                                new ru.nsu.group21208.filter.naida.OrderedDitheringFilter(),
+                                                createTextBufferedImage("OrderedDithering"),
+                                                "OrderedDithering",
+                                                "OrderedDithering"
+                                        )
+                                ),
+                                "naida"
                         )
                 )
         ));
