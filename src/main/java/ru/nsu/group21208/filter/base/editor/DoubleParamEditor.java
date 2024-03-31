@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.text.NumberFormat;
+import java.text.ParseException;
 
 public class DoubleParamEditor extends JPanel {
 
@@ -26,6 +27,8 @@ public class DoubleParamEditor extends JPanel {
 
     private boolean textInUpdate = false;
 
+    private final NumberFormat amountFormat;
+
     public DoubleParamEditor(DoubleParam param) {
         super();
         this.defaultValue = param.getValue();
@@ -33,7 +36,7 @@ public class DoubleParamEditor extends JPanel {
         setLayout(new FlowLayout(FlowLayout.CENTER));
         JLabel label = new JLabel(param.name());
         add(label);
-        NumberFormat amountFormat = NumberFormat.getNumberInstance();
+        amountFormat = NumberFormat.getNumberInstance();
         amountFormat.setParseIntegerOnly(false);
         textField = new JFormattedTextField(amountFormat);
         textField.addFocusListener(new FocusListener() {
@@ -44,17 +47,17 @@ public class DoubleParamEditor extends JPanel {
                 textFieldUpdate();
             }
         });
-        textField.setMinimumSize(new Dimension(30, 20));
-        textField.setSize( 30, 20);
-        textField.setPreferredSize(new Dimension(40, 20));
+        Dimension size = new Dimension(Math.max(30, 6*5 + 8 * (int) Math.log10(param.max())), 20);
+        textField.setMinimumSize(size);
+        textField.setSize(size.width , size.height);
+        textField.setPreferredSize(size);
         add(textField);
-        textField.setText(Double.toString(param.getValue()));
+        textField.setText(amountFormat.format(param.getValue()));
         textField.addActionListener(this::updateField);
         slider = new JSlider(
                 0, param.getDivisions(),
                 fitSlider(param.getValue())
         );
-//        slider = new JSlider((int) param.min(), (int) param.max(), param.getValue().intValue());
         add(slider);
         slider.addChangeListener(this::sliderUpdate);
     }
@@ -67,14 +70,14 @@ public class DoubleParamEditor extends JPanel {
         textInUpdate = true;
         String text = textField.getText();
         try {
-            double val = Double.parseDouble(text);
+            double val = amountFormat.parse(text).doubleValue();
             if (val < param.min()) {
-                textField.setText(Double.toString(param.min()));
+                textField.setText(amountFormat.format(param.min()));
                 wrongDataDialog();
                 val = param.min();
             }
             if (val > param.max()) {
-                textField.setText(Double.toString(param.max()));
+                textField.setText(amountFormat.format(param.max()));
                 wrongDataDialog();
                 param.max();
             }
@@ -82,8 +85,8 @@ public class DoubleParamEditor extends JPanel {
                 slider.setValue(fitSlider(val));
                 setValue(val);
             }
-        } catch (NumberFormatException ex) {
-            textField.setText(Double.toString(defaultValue));
+        } catch (ParseException ex) {
+            textField.setText(amountFormat.format(defaultValue));
             wrongDataDialog();
             slider.setValue(fitSlider(defaultValue));
         } finally {
@@ -96,7 +99,7 @@ public class DoubleParamEditor extends JPanel {
         int val = slider.getValue();
         if (!textInUpdate) {
             double value = getFromSlider(val);
-            textField.setText(String.format("%.2f", value).replace(",", "."));
+            textField.setText(amountFormat.format(value));
             textFieldUpdate();
             setValue(value);
         }
