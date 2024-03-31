@@ -4,6 +4,8 @@ import ru.nsu.group21208.filter.dyachenko.*;
 import ru.nsu.group21208.filter.general.SharpeningFilter;
 import ru.nsu.group21208.filter.general.InvertFilter;
 import ru.nsu.group21208.filter.general.GrayFilter;
+import ru.nsu.group21208.filter.naida.DitheringFilter;
+import ru.nsu.group21208.filter.naida.GlassBallFilter;
 import ru.nsu.group21208.filter.ponomarev.EmbossingFilter;
 import ru.nsu.group21208.filter.ponomarev.FloydSteinbergDithering;
 import ru.nsu.group21208.filter.ponomarev.OrderDithering;
@@ -169,6 +171,29 @@ public class App extends JFrame {
                                         )
                                 ),
                                 "general"
+                        ),
+                        new FilterGroup(
+                                List.of(
+                                        new FilterInfo<>(
+                                                new DitheringFilter(),
+                                                createTextBufferedImage("Dithering"),
+                                                "Dith",
+                                                "Dithering"
+                                        ),
+                                        new FilterInfo<>(
+                                                new ru.nsu.group21208.filter.naida.OrderedDitheringFilter(),
+                                                createTextBufferedImage("OrderedDithering"),
+                                                "OrdD",
+                                                "Ordered Dithering"
+                                        ),
+                                        new FilterInfo<>(
+                                                new GlassBallFilter(),
+                                                createTextBufferedImage("GlassBallFilter"),
+                                                "GBF",
+                                                "Glass Ball Filter"
+                                        )
+                                ),
+                                "naida"
                         )
                 )
         ));
