@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.text.NumberFormat;
+import java.text.ParseException;
 
 public class IntegerParamEditor extends JPanel {
 
@@ -18,14 +19,17 @@ public class IntegerParamEditor extends JPanel {
 
     private final IntegerParam param;
 
+    private final NumberFormat amountFormat;
+
     public IntegerParamEditor(IntegerParam param) {
         super();
         this.param = param;
         setLayout(new FlowLayout(FlowLayout.CENTER));
         JLabel label = new JLabel(param.name());
         add(label);
-        NumberFormat amountFormat = NumberFormat.getNumberInstance();
+        amountFormat = NumberFormat.getNumberInstance();
         amountFormat.setParseIntegerOnly(true);
+        amountFormat.setGroupingUsed(true);
         textField = new JFormattedTextField(amountFormat);
         textField.addFocusListener(new FocusListener() {
             @Override
@@ -35,11 +39,12 @@ public class IntegerParamEditor extends JPanel {
                 textFieldUpdate();
             }
         });
-        textField.setMinimumSize(new Dimension(30, 20));
-        textField.setSize( 30, 20);
-        textField.setPreferredSize(new Dimension(40, 20));
+        Dimension size = new Dimension(Math.max(30, 8 + 10 * (int) Math.log10(param.max())), 20);
+        textField.setMinimumSize(size);
+        textField.setSize(size.width , size.height);
+        textField.setPreferredSize(size);
         add(textField);
-        textField.setText(Integer.toString(param.getValue()));
+        textField.setText(amountFormat.format(param.getValue()));
         textField.addActionListener(this::updateField);
         slider = new JSlider(param.min(), param.max(), param.getValue());
         add(slider);
@@ -52,20 +57,20 @@ public class IntegerParamEditor extends JPanel {
 
     private void textFieldUpdate() {
         try {
-            int val = Integer.parseInt(textField.getText());
+            int val = amountFormat.parse(textField.getText()).intValue();
             if (val < param.min()) {
-                textField.setText(Integer.toString(param.min()));
+                textField.setText(amountFormat.format(param.min()));
                 wrongDataDialog();
                 val = param.min();
             }
             if (val > param.max()) {
-                textField.setText(Integer.toString(param.max()));
+                textField.setText(amountFormat.format(param.max()));
                 wrongDataDialog();
                 val = param.max();
             }
             slider.setValue(val);
-        } catch (NumberFormatException ex) {
-            textField.setText(Integer.toString(param.min()));
+        } catch (ParseException ex) {
+            textField.setText(amountFormat.format(param.getDefault()));
             wrongDataDialog();
             slider.setValue(param.min());
         }
@@ -73,7 +78,7 @@ public class IntegerParamEditor extends JPanel {
 
     private void updateSlider(ChangeEvent e) {
         int val = slider.getValue();
-        textField.setText(Integer.toString(val));
+        textField.setText(amountFormat.format(val));
         setValue(val);
     }
 
