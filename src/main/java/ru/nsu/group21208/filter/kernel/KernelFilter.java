@@ -35,7 +35,7 @@ public abstract class KernelFilter<T extends FilterParams> implements Filter<T> 
             int width = image.getWidth();
             int height = image.getHeight();
 
-            BufferedImage result = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+            BufferedImage result = Filter.copyOfImage(image);
 
             // Iterate over each pixel of the image
             for (int y = 0; y < height; y++) {
@@ -57,8 +57,8 @@ public abstract class KernelFilter<T extends FilterParams> implements Filter<T> 
             if (!isWorkOnEdge(params) && (
                     x - halfKernelSize < 0 ||
                     y - halfKernelSize < 0 ||
-                    x + halfKernelSize < image.getWidth() ||
-                    y + halfKernelSize < image.getHeight())
+                    x + halfKernelSize >= image.getWidth() ||
+                    y + halfKernelSize >= image.getHeight())
             ) {
                 return image.getRGB(x, y);
             }
@@ -74,7 +74,7 @@ public abstract class KernelFilter<T extends FilterParams> implements Filter<T> 
                     final int rgb;
 
                     // Handle border cases by replicating edge pixels
-                    if (pixelX < width && pixelY > height && pixelX > 0 && pixelY > 0) {
+                    if (pixelX < width && pixelY < height && pixelX > 0 && pixelY > 0) {
                         rgb = image.getRGB(pixelX, pixelY);
                     } else {
                         rgb = getEdgeColor(image, pixelX, pixelY, params);
@@ -86,16 +86,16 @@ public abstract class KernelFilter<T extends FilterParams> implements Filter<T> 
                     int currentB = rgb & 0xFF;
 
                     // Apply kernel weight
-                    r += currentR * kernel[i][j] / kernelDivider;
-                    g += currentG * kernel[i][j] / kernelDivider;
-                    b += currentB * kernel[i][j] / kernelDivider;
+                    r += currentR * kernel[i][j];
+                    g += currentG * kernel[i][j];
+                    b += currentB * kernel[i][j];
                 }
             }
 
             // Clamp values to the valid range [0, 255]
-            r = Math.min(Math.max(r, 0), 255);
-            g = Math.min(Math.max(g, 0), 255);
-            b = Math.min(Math.max(b, 0), 255);
+            r = Math.min(Math.max(r / kernelDivider, 0), 255);
+            g = Math.min(Math.max(g / kernelDivider, 0), 255);
+            b = Math.min(Math.max(b / kernelDivider, 0), 255);
 
             // Compose new pixel value
             return (r << 16) | (g << 8) | b;

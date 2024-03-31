@@ -1,5 +1,6 @@
 package ru.nsu.group21208.filter.dyachenko;
 
+import ru.nsu.group21208.filter.Filter;
 import ru.nsu.group21208.filter.ImageTransformation;
 
 import java.awt.image.BufferedImage;
@@ -23,10 +24,8 @@ public class OrderedDitheringTransformation implements ImageTransformation {
 
     @Override
     public BufferedImage transformation(BufferedImage image) {
-        int width = image.getWidth();
-        int height = image.getHeight();
         BufferedImage corr_image = new GammaTransformation(gamma).transformation(image);
-        BufferedImage newImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage newImage = Filter.copyOfImage(corr_image);
         ditherColor(corr_image, newImage, ColorUtils::getRed, ColorUtils::setRed, redColors);
         ditherColor(newImage, newImage, ColorUtils::getGreen, ColorUtils::setGreen, greenColors);
         ditherColor(newImage, newImage, ColorUtils::getBlue, ColorUtils::setBlue, blueColors);

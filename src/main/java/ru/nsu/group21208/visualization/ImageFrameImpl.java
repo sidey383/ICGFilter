@@ -3,11 +3,15 @@ package ru.nsu.group21208.visualization;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.nsu.group21208.filter.ImageTransformation;
+import ru.nsu.group21208.interaction.OriginalToggleInteraction;
+import ru.nsu.group21208.interaction.toggle.ToggleActor;
 
 import javax.swing.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 
-public class ImageFrameImpl implements ImageFrame {
+public class ImageFrameImpl implements ImageFrame, ToggleActor<OriginalToggleInteraction.Mode>, MouseListener {
     private final JScrollPane scrollPane = new JScrollPane();
     private final ImagePanel panel;
     private BufferedImage originalImage = null;
@@ -15,14 +19,26 @@ public class ImageFrameImpl implements ImageFrame {
     private ImageTransformation transformation = ImageFrame.identicalImageTransformation();
     private boolean showOriginal = false;
 
+    private OriginalToggleInteraction interaction;
+
     public ImageFrameImpl() {
         panel = new ImagePanel(scrollPane);
+        panel.addMouseListener(this);
     }
 
     @Override
     public JComponent getShowComponent() {
         return scrollPane;
     }
+
+    @Override
+    public void setOriginalToggle(OriginalToggleInteraction interaction) {
+        this.interaction = interaction;
+        interaction.addToggleActor(this);
+    }
+
+    @Override
+    public void toggle(OriginalToggleInteraction.@Nullable Mode item) {}
 
     @Override
     public void setOriginalImage(@Nullable BufferedImage image) {
@@ -79,4 +95,27 @@ public class ImageFrameImpl implements ImageFrame {
             panel.setImage(modifiedImage);
         }
     }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        if (interaction == null)
+            return;
+        if (showOriginal) {
+            interaction.filterInteraction().toggle(panel, this);
+        } else {
+            interaction.originalInteraction().toggle(panel, this);
+        }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {}
+
+    @Override
+    public void mouseReleased(MouseEvent e) {}
+
+    @Override
+    public void mouseEntered(MouseEvent e) {}
+
+    @Override
+    public void mouseExited(MouseEvent e) {}
 }

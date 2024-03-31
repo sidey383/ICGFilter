@@ -1,10 +1,10 @@
 package ru.nsu.group21208;
 
-import ru.nsu.group21208.filter.dyachenko.FSDitheringFilter;
-import ru.nsu.group21208.filter.dyachenko.GammaFilter;
-import ru.nsu.group21208.filter.dyachenko.OrderedDitheringFilter;
-import ru.nsu.group21208.filter.dyachenko.RotationFilter;
-import ru.nsu.group21208.filter.naida.DitheringFilter;
+import ru.nsu.group21208.filter.FilterParams;
+import ru.nsu.group21208.filter.dyachenko.*;
+import ru.nsu.group21208.filter.general.SharpeningFilter;
+import ru.nsu.group21208.filter.general.InvertFilter;
+import ru.nsu.group21208.filter.general.GrayFilter;
 import ru.nsu.group21208.filter.ponomarev.EmbossingFilter;
 import ru.nsu.group21208.filter.ponomarev.RotateFilter;
 import ru.nsu.group21208.interaction.impl.*;
@@ -116,6 +116,24 @@ public class App extends JFrame {
                                                 createTextBufferedImage("Rot"),
                                                 "Rotation",
                                                 "Rotation filter"
+                                        ),
+                                        new FilterInfo<>(
+                                                new RobertsFilter(),
+                                                createTextBufferedImage("Rob"),
+                                                "Roberts",
+                                                "Roberts border filter"
+                                        ),
+                                        new FilterInfo<>(
+                                                new SobelFilter(),
+                                                createTextBufferedImage("Sob"),
+                                                "Sobel",
+                                                "Sobel border filter"
+                                        ),
+                                        new FilterInfo<>(
+                                                new BlurFilter(),
+                                                createTextBufferedImage("Blur"),
+                                                "Blur",
+                                                "Gaussian and Box Blur"
                                         )
                                 ),
                                 "dyachenko"
@@ -123,16 +141,30 @@ public class App extends JFrame {
                         new FilterGroup(
                                 List.of(
                                         new FilterInfo<>(
-                                                new DitheringFilter(),
-                                                createTextBufferedImage("Dith"),
-                                                "Dithering",
-                                                "Dithering filter"
+                                                new SharpeningFilter(),
+                                                createTextBufferedImage("Sharp"),
+                                                "Sharp",
+                                                "Sharp"
+                                          ),
+                                          new FilterInfo<>(
+                                                new InvertFilter(),
+                                                createTextBufferedImage("Invert"),
+                                                "Invert",
+                                                "Invert colors"
+                                          ),
+                                          new FilterInfo<>(
+                                                new GrayFilter(),
+                                                createTextBufferedImage("Gray"),
+                                                "Gray",
+                                                "Gray filter"
                                         )
                                 ),
-                                "naida"
+                                "general"
                         )
                 )
         ));
+
+        imageFrame.setOriginalToggle(storage.getOriginalToggleInteraction());
 
         setJMenuBar(new MenuBar(storage));
         add(new ToolBar(storage), BorderLayout.NORTH);

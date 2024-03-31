@@ -66,10 +66,14 @@ public class FilterInteractionImpl extends AbstractToggle<FilterHolder<?>> imple
         edited = holder;
         return (t) -> {
             synchronized (FilterInteractionImpl.this) {
-                active = holder;
                 edited = null;
-                frame.setImageTransformation(Objects.requireNonNullElseGet(t, ImageFrame::identicalImageTransformation));
-                toggle(actor, holder);
+                if (t != null) {
+                    active = holder;
+                    frame.setImageTransformation(Objects.requireNonNullElseGet(t, ImageFrame::identicalImageTransformation));
+                    toggle(actor, holder);
+                } else {
+                    actor.toggle(active);
+                }
             }
         };
     }

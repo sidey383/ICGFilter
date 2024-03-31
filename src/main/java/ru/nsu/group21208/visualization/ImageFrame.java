@@ -3,6 +3,7 @@ package ru.nsu.group21208.visualization;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.nsu.group21208.filter.ImageTransformation;
+import ru.nsu.group21208.interaction.OriginalToggleInteraction;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,6 +28,8 @@ public interface ImageFrame {
     BufferedImage getOriginalImage();
 
     BufferedImage getModifiedImage();
+
+    void setOriginalToggle(OriginalToggleInteraction interaction);
 
     void showOriginal(boolean value);
 

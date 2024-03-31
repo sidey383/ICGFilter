@@ -1,5 +1,6 @@
 package ru.nsu.group21208.filter.dyachenko;
 
+import ru.nsu.group21208.filter.Filter;
 import ru.nsu.group21208.filter.ImageTransformation;
 
 import java.awt.image.BufferedImage;
@@ -18,7 +19,7 @@ public class GammaTransformation implements ImageTransformation {
     public BufferedImage transformation(BufferedImage image) {
         int width = image.getWidth();
         int height = image.getHeight();
-        BufferedImage newImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage newImage = Filter.copyOfImage(image);
 
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
