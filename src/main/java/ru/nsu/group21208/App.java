@@ -6,6 +6,7 @@ import ru.nsu.group21208.filter.general.SharpeningFilter;
 import ru.nsu.group21208.filter.general.InvertFilter;
 import ru.nsu.group21208.filter.general.GrayFilter;
 import ru.nsu.group21208.filter.naida.DitheringFilter;
+import ru.nsu.group21208.filter.naida.GlassBallFilter;
 import ru.nsu.group21208.filter.ponomarev.EmbossingFilter;
 import ru.nsu.group21208.filter.ponomarev.RotateFilter;
 import ru.nsu.group21208.interaction.impl.*;
@@ -167,14 +168,20 @@ public class App extends JFrame {
                                         new FilterInfo<>(
                                                 new DitheringFilter(),
                                                 createTextBufferedImage("Dithering"),
-                                                "Dithering",
+                                                "Dith",
                                                 "Dithering"
                                         ),
                                         new FilterInfo<>(
                                                 new ru.nsu.group21208.filter.naida.OrderedDitheringFilter(),
                                                 createTextBufferedImage("OrderedDithering"),
-                                                "OrderedDithering",
-                                                "OrderedDithering"
+                                                "OrdD",
+                                                "Ordered Dithering"
+                                        ),
+                                        new FilterInfo<>(
+                                                new GlassBallFilter(),
+                                                createTextBufferedImage("GlassBallFilter"),
+                                                "GBF",
+                                                "Glass Ball Filter"
                                         )
                                 ),
                                 "naida"
