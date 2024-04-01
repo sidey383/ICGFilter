@@ -25,7 +25,7 @@ public class RobertsTransformation implements ImageTransformation {
         g.fillRect(0,0,width,height);
         applyForColor(image, newImage, ColorUtils::getRed, ColorUtils::setRed, threshold);
         applyForColor(image, newImage, ColorUtils::getGreen, ColorUtils::setGreen, threshold);
-        applyForColor(image, newImage, ColorUtils::getRed, ColorUtils::setRed, threshold);
+        applyForColor(image, newImage, ColorUtils::getBlue, ColorUtils::setBlue, threshold);
         return newImage;
     }
 
