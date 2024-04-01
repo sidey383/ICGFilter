@@ -205,6 +205,12 @@ public class App extends JFrame {
                                                 "Floyd-Steinberg dithering"
                                         ),
                                         new FilterInfo<>(
+                                                new ru.nsu.group21208.filter.porotnikov.OrderedDitheringFilter(),
+                                                createTextBufferedImage("ORD"),
+                                                "ORD",
+                                                "ORD"
+                                        ),
+                                        new FilterInfo<>(
                                                 new VignetteFilter(),
                                                 createTextBufferedImage("Vig"),
                                                 "Vig",
