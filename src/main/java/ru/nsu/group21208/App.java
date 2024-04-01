@@ -10,6 +10,7 @@ import ru.nsu.group21208.filter.ponomarev.EmbossingFilter;
 import ru.nsu.group21208.filter.ponomarev.FloydSteinbergDithering;
 import ru.nsu.group21208.filter.ponomarev.OrderDithering;
 import ru.nsu.group21208.filter.ponomarev.RandomRectFilter;
+import ru.nsu.group21208.filter.porotnikov.VignetteFilter;
 import ru.nsu.group21208.interaction.impl.*;
 import ru.nsu.group21208.interaction.impl.filter.FilterGroup;
 import ru.nsu.group21208.interaction.impl.filter.FilterInfo;
@@ -202,6 +203,12 @@ public class App extends JFrame {
                                                 createTextBufferedImage("Dith"),
                                                 "Dith",
                                                 "Floyd-Steinberg dithering"
+                                        ),
+                                        new FilterInfo<>(
+                                                new VignetteFilter(),
+                                                createTextBufferedImage("Vig"),
+                                                "Vig",
+                                                "Vignette filter"
                                         )
                                 ),
                                 "porotnikov"
