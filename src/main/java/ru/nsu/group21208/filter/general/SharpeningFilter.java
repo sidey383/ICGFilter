@@ -48,7 +48,7 @@ public class SharpeningFilter extends KernelFilter<EmptyParams> {
         return new SharpeningFilterTransformation(parameters);
     }
 
-    protected class SharpeningFilterTransformation extends KernelTransformation {
+    public class SharpeningFilterTransformation extends KernelTransformation {
         public SharpeningFilterTransformation(EmptyParams params) {
             super(params);
         }
