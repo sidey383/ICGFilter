@@ -145,6 +145,12 @@ public class App extends JFrame {
                                                 createTextBufferedImage("Blur"),
                                                 "Blur",
                                                 "Gaussian and Box Blur"
+                                        ),
+                                        new FilterInfo<>(
+                                                new GaborFilter(),
+                                                createTextBufferedImage("Gabor"),
+                                                "Gabor",
+                                                "Gabor filter"
                                         )
                                 ),
                                 "dyachenko"

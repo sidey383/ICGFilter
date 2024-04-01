@@ -13,23 +13,20 @@ public class OrderedDitheringTransformation implements ImageTransformation {
     private final int redColors;
     private final int blueColors;
     private final int greenColors;
-    private final double gamma;
 
-    public OrderedDitheringTransformation(int redColors, int greenColors, int blueColors, double gamma) {
+    public OrderedDitheringTransformation(int redColors, int greenColors, int blueColors) {
         this.redColors = redColors;
         this.blueColors = blueColors;
         this.greenColors = greenColors;
-        this.gamma = gamma;
     }
 
     @Override
     public BufferedImage transformation(BufferedImage image) {
-        BufferedImage corr_image = new GammaTransformation(gamma).transformation(image);
-        BufferedImage newImage = Filter.copyOfImage(corr_image);
-        ditherColor(corr_image, newImage, ColorUtils::getRed, ColorUtils::setRed, redColors);
+        BufferedImage newImage = Filter.copyOfImage(image);
+        ditherColor(image, newImage, ColorUtils::getRed, ColorUtils::setRed, redColors);
         ditherColor(newImage, newImage, ColorUtils::getGreen, ColorUtils::setGreen, greenColors);
         ditherColor(newImage, newImage, ColorUtils::getBlue, ColorUtils::setBlue, blueColors);
-        return new GammaTransformation(1. / gamma).transformation(newImage);
+        return newImage;
     }
 
     private void ditherColor(
@@ -64,8 +61,9 @@ public class OrderedDitheringTransformation implements ImageTransformation {
                     throw new RuntimeException(e);
                 }
                 int c = get.apply(rgb);
-                int err = (256 * mat[x % size][y % size] - 128*(size * size)) / (size * size);
-//                err -= 128;
+                int err = mat[x % size][y % size] * 256 / (size * size - 1);
+                err -= 128;
+                err /= tones / 2;
                 int res = trunc(applyError(c, err), tones);
                 nw.setRGB(x, y, set.apply(rgb, res));
             }
