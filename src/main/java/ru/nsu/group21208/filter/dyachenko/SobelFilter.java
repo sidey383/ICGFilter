@@ -35,7 +35,7 @@ public class SobelFilter implements Filter<BaseFilterParams> {
 
             applyForColor(image, newImage, ColorUtils::getRed, ColorUtils::setRed, threshold);
             applyForColor(image, newImage, ColorUtils::getGreen, ColorUtils::setGreen, threshold);
-            applyForColor(image, newImage, ColorUtils::getRed, ColorUtils::setRed, threshold);
+            applyForColor(image, newImage, ColorUtils::getBlue, ColorUtils::setBlue, threshold);
             return newImage;
         };
     }
