@@ -4,6 +4,7 @@ import ru.nsu.group21208.filter.dyachenko.*;
 import ru.nsu.group21208.filter.general.SharpeningFilter;
 import ru.nsu.group21208.filter.general.InvertFilter;
 import ru.nsu.group21208.filter.general.GrayFilter;
+import ru.nsu.group21208.filter.general.WaterColorFilter;
 import ru.nsu.group21208.filter.naida.DitheringFilter;
 import ru.nsu.group21208.filter.naida.GlassBallFilter;
 import ru.nsu.group21208.filter.ponomarev.EmbossingFilter;
@@ -168,6 +169,12 @@ public class App extends JFrame {
                                                 createTextBufferedImage("Gray"),
                                                 "Gray",
                                                 "Gray filter"
+                                        ),
+                                        new FilterInfo<>(
+                                                new WaterColorFilter(),
+                                                createTextBufferedImage("WaterColor"),
+                                                "WaterColor",
+                                                "WaterColor"
                                         )
                                 ),
                                 "general"
