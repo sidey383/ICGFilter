@@ -30,7 +30,7 @@ public class WaterColorFilterTransformation implements ImageTransformation {
                 for (int y = startY; y < stopY; ++y) {
                     for (int x = startX; x < stopX; ++x) {
                         int rgb = image.getRGB(x, y);
-                        int pos = 5 * (x - startX) + y - startY;
+                        int pos = winSize * (x - startX) + y - startY;
                         tempArrR[pos] = (rgb & 0x00FF0000) >> 16;
                         tempArrG[pos] = (rgb & 0x0000FF00) >> 8;
                         tempArrB[pos] = rgb & 0x000000FF;
@@ -39,8 +39,8 @@ public class WaterColorFilterTransformation implements ImageTransformation {
                 Arrays.sort(tempArrR);
                 Arrays.sort(tempArrG);
                 Arrays.sort(tempArrB);
-                int newRgb = ((tempArrR[winSize / 2] & 0xFF) << 16) | ((tempArrG[winSize / 2] & 0xFF) << 8) |
-                        (tempArrB[winSize / 2] & 0xFF);
+                int newRgb = ((tempArrR[winSize * winSize / 2] & 0xFF) << 16) | ((tempArrG[winSize * winSize / 2] & 0xFF) << 8) |
+                        (tempArrB[winSize * winSize / 2] & 0xFF);
                 newImg.setRGB(j, i, newRgb);
             }
         }
